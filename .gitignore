@@ -1,0 +1,9 @@
+table.txt
+table2.txt
+log.txt
+build
+*.so
+*.c
+dist
+cribbage.egg-info
+.ipynb_checkpoints
