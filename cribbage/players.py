@@ -172,14 +172,14 @@ class HumanPlayer(Player):
                 return cards
 
 
-class EnumerativeAIPlayer(Player):
+class GreedyAgentPlayer(Player):
     """
     "Expert systems" style AI player that systematically
     enumerates possible moves and chooses the move that
     maximizes its score after the move
     """
 
-    def ask_for_discards(self, my_crib=True):
+    def ask_for_discards(self):
         """
         For each possible discard, score and select
         highest scoring move. Note: this will give opponents 
@@ -201,13 +201,7 @@ class EnumerativeAIPlayer(Player):
             discards.append(discard)
             mean_scores.append(inner_scores.mean())
 
-        # return either the best (if my crib) or the worst (if not)
-        if my_crib:
-            selected = np.argmax(mean_scores)
-        else:
-            selected = np.argmin(mean_scores)
-
-        return list(discards[selected])
+        return list(discards[np.argmin(mean_scores)])
 
 
     def ask_for_play(self):
@@ -220,7 +214,7 @@ class EnumerativeAIPlayer(Player):
         plays = []
         for card in self.hand:
             plays.append(card)
-            scores.append(score_count(play_vector + [card]))
+            scores.append(score_count(plays))
         max_index = np.argmax(scores)
 
         return plays[max_index]
