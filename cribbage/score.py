@@ -87,14 +87,15 @@ def score_count(plays):
     if not plays or len(plays) < 2:
         return score
 
-    count = sum(plays)
+    count = sum(list(map(lambda x: x.value,plays)))
+
+    if count >= 32:
+       return -1
+
     if count == 15 or count == 31:
         score += 2
-
     if plays[-1].rank == plays[-2].rank:
         score += 2
     if len(plays) > 2 and plays[-2].rank == plays[-3].rank:
         score += 4
-        # hack? or does that actually make sense?
-
     return score

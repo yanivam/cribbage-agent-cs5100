@@ -46,7 +46,7 @@ class Player:
 
     # Counting plays
 
-    def ask_for_play(self):
+    def ask_for_play(self, previous_plays):
         """Should return a single card from the player
 
         Private method"""
@@ -69,7 +69,7 @@ class Player:
             print(">>>", self, self.hand, "I have to say 'go' on that one")
             return "Go!"
         while True:
-            card = self.ask_for_play()  # subclasses (that is, actual players) must implement this
+            card = self.ask_for_play(previous_plays)  # subclasses (that is, actual players) must implement this
             #print("Nominated card", card)
             if sum((pp.value for pp in previous_plays)) + card.value < 32:
                 self.update_after_play(card)
@@ -125,7 +125,7 @@ class RandomPlayer(Player):
     A player who plays randomly
     """
 
-    def ask_for_play(self):
+    def ask_for_play(self, previous_plays):
         shuffle(self.hand) # this handles a case when 0 is not a legal play
         return self.hand[0]
 
@@ -142,7 +142,7 @@ class HumanPlayer(Player):
     """
 
 
-    def ask_for_play(self):
+    def ask_for_play(self, previous_plays):
         """Ask a human for a card during counting"""
         
         d = dict(enumerate(self.hand, 1))
@@ -204,7 +204,7 @@ class GreedyAgentPlayer(Player):
         return list(discards[np.argmin(mean_scores)])
 
 
-    def ask_for_play(self):
+    def ask_for_play(self, previous_plays):
         """
         Calculate points for each possible play in your hand
         and choose the one that maximizes the points
@@ -214,7 +214,7 @@ class GreedyAgentPlayer(Player):
         plays = []
         for card in self.hand:
             plays.append(card)
-            scores.append(score_count(plays))
+            scores.append(score_count(previous_plays + [card]))
         max_index = np.argmax(scores)
 
         return plays[max_index]

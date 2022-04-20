@@ -24,7 +24,7 @@ setup(
     ],
     keywords='cribbage cards card-games machine-learning ai',
     packages = ['cribbage'] ,
-    install_requires=['pytest', 'numpy', 'tqdm'],
+    install_requires=['numpy', 'tqdm'],
     entry_points={
         'console_scripts': [
             'cribbage=cribbage.main:main',
