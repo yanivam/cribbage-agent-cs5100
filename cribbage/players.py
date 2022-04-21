@@ -91,10 +91,9 @@ class Player:
                 print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
 
     def play_step(self, count, previous_plays, turn):
-
+        pass
 
     # Scoring
-
     def peg(self, points):
         self.score += points
         if self.score > 120:
