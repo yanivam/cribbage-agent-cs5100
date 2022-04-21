@@ -49,8 +49,8 @@ class Hand:
     def discards(self):
         """Get discards from both players and add them to crib"""
 
-        d1 = self.dealer.discards()
-        d2 = self.pone.discards()
+        d1 = self.dealer.discards(dealer=1)
+        d2 = self.pone.discards(dealer=0)
         self.dealer.crib = d1 + d2
 
 
@@ -75,7 +75,7 @@ class Hand:
 
             # player whose turn it is plays 
             player = self.turn_map[turn]
-            my_play = player.play(count, plays) # can be `"Go!"` or a card object 
+            my_play = player.play(count, plays, turn) # can be `"Go!"` or a card object
             
             if isinstance(my_play, str):
                 if go_has_been_said:

@@ -1,11 +1,20 @@
+import random
 from itertools import combinations
 from random import choice, shuffle 
 
 import numpy as np
+import torch
 from tqdm import tqdm
+from collections import deque
 
 from .score import score_hand, score_count
 from .card import Deck
+
+# Hyperparameters for RL agent:
+from QModel import LinearQNet, QTrainer
+MAX_MEMORY = 100_000
+BATCH_SIZE = 1000
+LR = 0.001
 
 
 class WinGame(Exception):
@@ -28,7 +37,7 @@ class Player:
 
     # Discards
 
-    def ask_for_discards():
+    def ask_for_discards(dealer=0):
         """Should return two cards from the player"""
         raise Exception("You need to implement `ask_for_discards` yourself")
 
@@ -38,15 +47,15 @@ class Player:
             self.hand.remove(discard)
 
 
-    def discards(self):
-        cards = self.ask_for_discards()
+    def discards(self, dealer=0):
+        cards = self.ask_for_discards(dealer)
         self.update_after_discards(cards)
         return cards
 
 
     # Counting plays
 
-    def ask_for_play(self, previous_plays):
+    def ask_for_play(self, previous_plays, turn=0):
         """Should return a single card from the player
 
         Private method"""
@@ -55,12 +64,11 @@ class Player:
 
     def update_after_play(self, play):
         """Private method"""
-        
         self.table.append(play)
         self.hand.remove(play)
 
 
-    def play(self, count, previous_plays):
+    def play(self, count, previous_plays, turn=0):
         """Public method"""
         if not self.hand:
             print('>>> I have no cards', self)
@@ -69,7 +77,7 @@ class Player:
             print(">>>", self, self.hand, "I have to say 'go' on that one")
             return "Go!"
         while True:
-            card = self.ask_for_play(previous_plays)  # subclasses (that is, actual players) must implement this
+            card = self.ask_for_play(previous_plays, turn)  # subclasses (that is, actual players) must implement this
             #print("Nominated card", card)
             if sum((pp.value for pp in previous_plays)) + card.value < 32:
                 self.update_after_play(card)
@@ -81,6 +89,8 @@ class Player:
                 # "go" here if you can legally play). How the code knows that 
                 # the player has a legal move is beyond me
                 print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
+
+    def play_step(self, count, previous_plays, turn):
 
 
     # Scoring
@@ -125,12 +135,12 @@ class RandomPlayer(Player):
     A player who plays randomly
     """
 
-    def ask_for_play(self, previous_plays):
+    def ask_for_play(self, previous_plays, turn=0):
         shuffle(self.hand) # this handles a case when 0 is not a legal play
         return self.hand[0]
 
 
-    def ask_for_discards(self):
+    def ask_for_discards(self, dealer=0):
         # and isn't needed here 
         return self.hand[0:2]
 
@@ -142,7 +152,7 @@ class HumanPlayer(Player):
     """
 
 
-    def ask_for_play(self, previous_plays):
+    def ask_for_play(self, previous_plays, turn=0):
         """Ask a human for a card during counting"""
         
         d = dict(enumerate(self.hand, 1))
@@ -155,7 +165,7 @@ class HumanPlayer(Player):
                 return card
 
 
-    def ask_for_discards(self):
+    def ask_for_discards(self, dealer=0):
         """After deal, ask a human for two cards to discard to crib"""
 
         d = dict(enumerate(self.sorted_hand, 1))
@@ -172,6 +182,99 @@ class HumanPlayer(Player):
                 return cards
 
 
+class RLAgent(Player):
+    """
+    A player that uses a RL trained model to select cards to play. Other
+    """
+    # Init should load the model and set it to eval mode
+    def __init__(self):
+        super().__init__()
+        self.discarded = []  # Will represent the discards that the player *knows* it discarded to crib
+        self.n_games = 0
+        self.epsilon = 0
+        self.gamma = 0.9
+        self.memory = deque(maxlen=MAX_MEMORY)
+        self.model = LinearQNet(209, 40, 6)
+        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+
+    def ask_for_play(self, previous_plays, turn=0):
+        # Convert hand and previous_plays into an input to the NN
+        # pass this input through the model
+        # convert model output into card choice
+        pass
+
+    def ask_for_discards(dealer=0):
+        # Convert hand and previous plays into an input to th NN
+        # pass this input through the model
+        # convert model output into card choice
+        pass
+
+    def _get_state(self, previous_plays, dealer):
+        '''
+        Get the state of play as a one-hot encoded np.array.
+
+        One input should represent whether or not the player is the dealer.
+        52 inputs represent 1-hot vector of whether or not card is in hand.
+        52 inputs represent "known" cards - i.e. the cards in the crib
+        104 inputs represent the state of play - the first 13 represent the rank of the first card
+        played, the second 13 represent the rank of the second, and so on.
+        '''
+        state = np.zeros(209)
+        if dealer == 1:
+            state[0] = 1
+
+        # Set state of cards in hand:
+        for card in self.hand:
+            idx = self._get_card_index(card)
+            idx = idx + 1  # Add one as we've already set the dealer state
+            state[idx] = 1
+
+        # Set state of "known cards" that were discarded to the crib:
+        for card in self.discarded:
+            idx = self._get_card_index(card)
+            idx = idx + 52 + 1
+            state[idx] = 1
+
+        # Set the state of play:
+        for i, card in enumerate(previous_plays):
+            card_idx = self._get_card_index(card)
+            idx = card_idx + (i * 13) + 52 + 52 + 1
+            state[idx] = 1
+
+        return state
+
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
+
+    def train_long_memory(self):
+        if len(self.memory) > BATCH_SIZE:
+            mini_sample = random.sample(self.memory, BATCH_SIZE)
+        else:
+            mini_sample = self.memory
+
+        states, actions, rewards, next_states, dones = zip(*mini_sample)
+        self.trainer.train_step(states, actions, rewards, next_states, dones)
+
+    def train_short_memory(self, state, action, reward, next_state, done):
+        self.trainer.train_step(state, action, reward, next_state, done)
+
+    def get_action(self, state):
+        self.epsilon = 80 - self.n_games
+        final_move = 0
+        if random.randint(0, 200) < self.epsilon:
+            final_move = random.randint(0, 5)
+        else:
+            state0 = torch.Tensor(state)
+            prediction = self.model(state0)
+            final_move = torch.argmax(prediction).item()
+        return final_move
+
+    def _get_card_index(self, card):
+        suit = card.suit
+        value = card.rank
+        return suit * 13 + value
+
+
 class GreedyAgentPlayer(Player):
     """
     "Expert systems" style AI player that systematically
@@ -179,7 +282,7 @@ class GreedyAgentPlayer(Player):
     maximizes its score after the move
     """
 
-    def ask_for_discards(self):
+    def ask_for_discards(self, dealer=0):
         """
         For each possible discard, score and select
         highest scoring move. Note: this will give opponents 
@@ -204,7 +307,7 @@ class GreedyAgentPlayer(Player):
         return list(discards[np.argmin(mean_scores)])
 
 
-    def ask_for_play(self, previous_plays):
+    def ask_for_play(self, previous_plays, turn=0):
         """
         Calculate points for each possible play in your hand
         and choose the one that maximizes the points
