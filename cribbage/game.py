@@ -103,13 +103,13 @@ class Hand:
                     print('counted to 15, 2 points for', player)
                     player.peg(2)
                 if len(plays) > 1:
-                    if plays[-1].value == plays[-2].value:  # Pair
+                    if plays[-1].rank == plays[-2].rank:  # Pair
                         pair = True
                 if len(plays) > 2 and pair:  # Check for pair royal
-                    if plays[-2].value == plays[-3].value:  # Pair royal
+                    if plays[-2].rank == plays[-3].rank:  # Pair royal
                         pair_royal = True
                 if len(plays) > 3 and pair_royal:
-                    if plays[-3].value == plays[-4].value:
+                    if plays[-3].rank == plays[-4].rank:
                         double_pair = True
                 if double_pair:
                     print('Double pair-royal, 12 points for', player)
