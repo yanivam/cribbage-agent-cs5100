@@ -17,7 +17,8 @@ def score_hand(hand, turn_card, is_crib=False):
         raise ValueError(
             "To score a hand, it must have 4 cards, not {}".format(len(hand))
         )
-
+    hand = list(hand)
+    # print(type(hand))
     points = 0
     points += score_fifteens(hand, turn_card)
     points += score_sets(hand, turn_card)
@@ -98,3 +99,34 @@ def score_count(plays):
         # hack? or does that actually make sense?
 
     return score
+
+def peg_val(card):
+    return 10 if card.getRank() > 10 else card.getRank()
+
+def scorePegging(self, hand, sequence, current_sum, card):
+        # Calculate the score for playing any specific card
+        if len(sequence) > 3:
+            cards = [peg_val(sequence[len(sequence) - 1]), peg_val(sequence[len(sequence) - 2]), peg_val(sequence[len(sequence) - 3])]
+            cards.sort()
+            if cards[0] + 1 in cards and cards[1] + 1 in cards:
+                if peg_val(card) == (cards[len(cards) - 1]) + 1 and peg_val(card) + current_sum <= 31:
+                    return 4
+
+        # Check 3rd card sequence
+        if len(sequence) > 2:
+            cards = [peg_val(sequence[len(sequence) - 1]), peg_val(sequence[len(sequence) - 2])]
+            cards.sort()
+            if cards[0] + 1 in cards:
+                if peg_val(card) == cards[len(cards) - 1] + 1 and peg_val(card) + current_sum <= 31:
+                    return 3
+
+        # Get sum to 15
+            if peg_val(card) + current_sum == 15:
+                return 2
+
+        # Play same rank
+        if len(sequence) > 0:
+            check = sequence[len(sequence) - 1]
+            if card == check and peg_val(card) + current_sum <= 31:
+                return 2
+        return 0
