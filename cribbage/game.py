@@ -31,7 +31,7 @@ class Hand:
 
         self.deal()
         self.discards()
-        print(f'Turn card {self.turn_card}')
+        #print(f'Turn card {self.turn_card}')
         self.counting()
         self.count_hands()
         self.clean_up()
@@ -59,10 +59,10 @@ class Hand:
         and a count of 0, start the counting portion of the game given 
         information about who"""
 
-        if not self.dealer.hand:
-            print('dealer has no cards')
-        if not self.pone.hand:
-            print('pone has no cards')        
+        #if not self.dealer.hand:
+            #print('dealer has no cards')
+        #if not self.pone.hand:
+            #print('pone has no cards')        
 
         count = 0  
         turn = 0 # index of whose turn it is 
@@ -71,7 +71,7 @@ class Hand:
         go_has_been_said = False 
 
         while not done: 
-            print('counting:', plays, count)
+            #print('counting:', plays, count)
 
             # player whose turn it is plays 
             player = self.turn_map[turn]
@@ -79,21 +79,21 @@ class Hand:
             
             if isinstance(my_play, str):
                 if go_has_been_said:
-                    print('"Go!" has already been said, so starting a new count at 0')
+                    #print('"Go!" has already been said, so starting a new count at 0')
                     done = True
                     count = 0  
                     break 
 
-                print('that"s a "go", switching turns')
+                #print('that"s a "go", switching turns')
                 go_has_been_said = True 
             else:
-                print(player, 'played', my_play)
+                #print(player, 'played', my_play)
                 count += my_play.value 
                 plays.append(my_play)
                 # score the play 
                 # needs a rework of `score_hand` to accept < 4 cards and no turn card 
                 if count == 31:
-                    print('counted to 31, point for', player)
+                    #print('counted to 31, point for', player)
                     player.peg(1)
                     done = True
                     count = 0  
@@ -102,22 +102,22 @@ class Hand:
  
 
     def counting(self):
-        print(f'Counting starts with {self.pone}')
+        #print(f'Counting starts with {self.pone}')
         while len(self.dealer.hand) + len(self.pone.hand) > 0:
             self.count_to_31()
 
 
     def count_hands(self):
-        print('Counting hands')
+        #print('Counting hands')
 
         _ = self.pone.count_hand(self.turn_card)
-        print('pone', self.pone, self.pone.table, _) 
-        
+        #print('pone', self.pone, self.pone.table, _) 
+
         _ = self.dealer.count_hand(self.turn_card)
-        print('dealer', self.dealer, self.dealer.table, _) 
+        #print('dealer', self.dealer, self.dealer.table, _) 
         
         _ = self.dealer.count_crib(self.turn_card)
-        print('crib', self.dealer, self.dealer.crib, _) 
+        #print('crib', self.dealer, self.dealer.crib, _) 
 
 
     def clean_up(self):
@@ -146,11 +146,11 @@ class Game:
         self.B = B
         if deal is None:
             self.deal = choice((0, 1))
-            print(f"############\n# Cribbage # \n############ \nStarting a new game with dealer \"{[self.A, self.B][self.deal]}\" and opponent \"{[self.A, self.B][self.deal ^ 1]}\"")
+            #print(f"############\n# Cribbage # \n############ \nStarting a new game with dealer \"{[self.A, self.B][self.deal]}\" and opponent \"{[self.A, self.B][self.deal ^ 1]}\"")
 
 
     def run(self):
-        print('score', self.A, self.B)
+        #print('score', self.A, self.B)
         while True:
             if self.deal == 0:
                 hand = Hand(self.A, self.B)

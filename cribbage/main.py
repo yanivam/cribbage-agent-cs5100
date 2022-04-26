@@ -1,21 +1,41 @@
 from argparse import ArgumentParser
 
+import random
 from .game import Game
 from .players import (
     WinGame,
     HumanPlayer,
     NondeterministicAIPlayer,
     GreedyAgentPlayer,
+    HeuristicAgentPlayer
 )
+import multiprocessing
+import time
 
+def playCribbageOnce(i):
+    print(f"start process {i}")
+    randomPlayerTurn = [GreedyAgentPlayer('Player 1'), NondeterministicAIPlayer('Player 2')]
+    random.shuffle(randomPlayerTurn)
+    game = Game(randomPlayerTurn[0], randomPlayerTurn[1])
+    try:
+        game.run()
+    except WinGame as win_game:
+        print(f"end process {i}")
+        return win_game
+
+def play1000CribbageGames():
+    pool = multiprocessing.Pool(multiprocessing.cpu_count() - 1)
+    winners = pool.map(playCribbageOnce, range(99))
+    pool.close()
+    pool.join()
+    return winners
 
 def main():
-
-
     # Take inputs from command line
     player_choices = {
         "human": HumanPlayer,
-        "expert": GreedyAgentPlayer,
+        "greedy": GreedyAgentPlayer,
+        "heuristic": HeuristicAgentPlayer,
         "random": NondeterministicAIPlayer,
     }
     '''
@@ -25,17 +45,13 @@ def main():
     parser.add_argument("-a", "--name_1", help="Optional name for player 1")
     parser.add_argument("-b", "--name_2", help="Optional name for player 2")
     args = parser.parse_args()
-
-    # Set up players
-    player_1 = player_choices[args.player1](name=args.name1 or 'Player 1')
-    player_2 = player_choices[args.player2](name=args.name2 or 'Player 2')
     '''
-    player_1 = GreedyAgentPlayer('Player 1')
-    player_2 = NondeterministicAIPlayer('Player 2')
 
     # Play game
-    game = Game(player_1, player_2)
-    try:
-        game.run()
-    except WinGame as win_game:
-        print(win_game)
+    start_time = time.time()
+    winners = play1000CribbageGames()
+    duration = time.time() - start_time
+    print('Played 1000 games in ' + str(duration) + ' seconds')
+
+    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 99
+    print('Percentage won by greedy agent: ' + str(p_sum))

@@ -10,12 +10,11 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='cribbage',
-    version='1.2.2',
-    description='Cribbage for your command line',
+    version='1.0.0',
+    description='Cribbage Agent Game',
     long_description=long_description,
-    url='https://github.com/dacarlin/cribbage',
-    author='Alex Carlin',
-    author_email='alxcarln@gmail.com',
+    url='https://github.com/yanivam/cribbage-agent-cs5100/',
+    author='CS5100',
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -24,7 +23,7 @@ setup(
     ],
     keywords='cribbage cards card-games machine-learning ai',
     packages = ['cribbage'] ,
-    install_requires=['numpy', 'tqdm'],
+    install_requires=['numpy'],
     entry_points={
         'console_scripts': [
             'cribbage=cribbage.main:main',

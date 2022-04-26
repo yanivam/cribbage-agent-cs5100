@@ -2,7 +2,6 @@ from itertools import combinations
 from random import choice, shuffle 
 
 import numpy as np
-from tqdm import tqdm
 
 from .score import score_hand, score_count
 from .card import Deck
@@ -63,24 +62,24 @@ class Player:
     def play(self, count, previous_plays):
         """Public method"""
         if not self.hand:
-            print('>>> I have no cards', self)
+            #print('>>> I have no cards', self)
             return "No cards!"
         elif all(count + card.value > 31 for card in self.hand):
-            print(">>>", self, self.hand, "I have to say 'go' on that one")
+            #print(">>>", self, self.hand, "I have to say 'go' on that one")
             return "Go!"
         while True:
             card = self.ask_for_play(previous_plays)  # subclasses (that is, actual players) must implement this
-            #print("Nominated card", card)
+            ##print("Nominated card", card)
             if sum((pp.value for pp in previous_plays)) + card.value < 32:
                 self.update_after_play(card)
                 return card
-            else: 
+            #else: 
                 # `self.ask_for_play` has returned a card that would put the 
                 # score above 31 but the player's hand contains at least one
                 # card that could be legally played (you're not allowed to say
                 # "go" here if you can legally play). How the code knows that 
                 # the player has a legal move is beyond me
-                print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
+                #print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
 
 
     # Scoring
@@ -146,7 +145,7 @@ class HumanPlayer(Player):
         """Ask a human for a card during counting"""
         
         d = dict(enumerate(self.hand, 1))
-        print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
+        #print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
 
         while True:
             inp = input(">>> Card number to play: ") or "1"
@@ -160,15 +159,15 @@ class HumanPlayer(Player):
 
         d = dict(enumerate(self.sorted_hand, 1))
 
-        print('>>> Please nominate two cards to discard to the crib')
-        print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
+        #print('>>> Please nominate two cards to discard to the crib')
+        #print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
         discard_prompt = ">>> "
 
         while True:
             inp = input(discard_prompt) or "12"
             cards = [d[int(i)] for i in inp.replace(" ", "").replace(",", "")]
             if len(cards) == 2:
-                print(f">>> Discarded {cards[0]} {cards[1]}")
+                #print(f">>> Discarded {cards[0]} {cards[1]}")
                 return cards
 
 
@@ -186,21 +185,83 @@ class GreedyAgentPlayer(Player):
         excellent cribs, needs a flag for minimizing 
         """
 
-        print("cribbage: {} is choosing discards".format(self))
+        #print("cribbage: {} is choosing discards".format(self))
         deck = Deck().draw(52)
         potential_cards = [n for n in deck if n not in self.hand]
-        bar = tqdm(total=226994)
         discards = []
         mean_scores = []
         for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
             inner_scores = []
             for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
                 inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
-                bar.update(1)
             inner_scores = np.array(inner_scores)
             discards.append(discard)
             mean_scores.append(inner_scores.mean())
 
+        return list(discards[np.argmin(mean_scores)])
+
+
+    def ask_for_play(self, previous_plays):
+        """
+        Calculate points for each possible play in your hand
+        and choose the one that maximizes the points
+        """
+
+        scores = []
+        plays = []
+        for card in self.hand:
+            plays.append(card)
+            scores.append(score_count(previous_plays + [card]))
+        max_index = np.argmax(scores)
+
+        return plays[max_index]
+
+class HeuristicAgentPlayer(Player):
+    """
+    "Expert systems" style AI player that systematically
+    enumerates possible moves and chooses the move that
+    maximizes its score after the move
+    """
+
+    def heuristicScoring(self, discards, mean_scores):
+        for discardIdx in range(len(discards)):
+            discard = discards[discardIdx]
+            if(sum(list(map(lambda d: d.value, discard))) == 5):
+                mean_scores[discardIdx] = -1
+            elif("Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
+                mean_scores[discardIdx] = -1
+            elif("J" in list(map(lambda d: d.rank_str, discard))):
+                mean_scores[discardIdx] -= 0.25 #25% cahnce of giving a point to the enemy
+            else:
+                for i in range(0, len(discard) - 1):
+                    for j in range(i + 1, len(discard)):
+                        if (abs(discard[i].value - discard[j].value) == 2):
+                            mean_scores[discardIdx] = -1
+                        if (discard[i].suit == discard[j].suit):
+                            mean_scores[discardIdx] = -1
+    
+    def ask_for_discards(self):
+        """
+        For each possible discard, score and select
+        highest scoring move. Note: this will give opponents 
+        excellent cribs, needs a flag for minimizing 
+        """
+
+        #print("cribbage: {} is choosing discards".format(self))
+        deck = Deck().draw(52)
+        potential_cards = [n for n in deck if n not in self.hand]
+        discards = []
+        mean_scores = []
+        for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+            inner_scores = []
+            for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
+                inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
+            inner_scores = np.array(inner_scores)
+            discards.append(discard)
+            mean_scores.append(inner_scores.mean())
+        
+        self.heuristicScoring(discards, mean_scores)
+        
         return list(discards[np.argmin(mean_scores)])
 
 
