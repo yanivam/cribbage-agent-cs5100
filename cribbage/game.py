@@ -96,8 +96,8 @@ class Hand:
                     #print('counted to 31, point for', player)
                     player.peg(1)
                     done = True
-                    count = 0  
-        
+                    count = 0
+
             turn = turn ^ 1 
  
 
@@ -150,8 +150,8 @@ class Game:
 
 
     def run(self):
-        #print('score', self.A, self.B)
         while True:
+            # print('score', self.A, self.B)
             if self.deal == 0:
                 hand = Hand(self.A, self.B)
                 hand.run()

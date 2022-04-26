@@ -3,7 +3,7 @@ from random import choice, shuffle
 
 import numpy as np
 
-from .score import score_hand, score_count
+from .score import score_hand, score_count, score_hand_heuristic
 from .card import Deck
 
 
@@ -223,22 +223,31 @@ class HeuristicAgentPlayer(Player):
     maximizes its score after the move
     """
 
-    def heuristicScoring(self, discards, mean_scores):
-        for discardIdx in range(len(discards)):
-            discard = discards[discardIdx]
+    def expertStrategyHeuristic(self, discards, scores):
+        new_discards = discards.copy()
+        new_scores = scores.copy()
+        for discard in discards:
             if(sum(list(map(lambda d: d.value, discard))) == 5):
-                mean_scores[discardIdx] = -1
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
             elif("Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
-                mean_scores[discardIdx] = -1
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
             elif("J" in list(map(lambda d: d.rank_str, discard))):
-                mean_scores[discardIdx] -= 0.25 #25% cahnce of giving a point to the enemy
-            else:
-                for i in range(0, len(discard) - 1):
-                    for j in range(i + 1, len(discard)):
-                        if (abs(discard[i].value - discard[j].value) == 2):
-                            mean_scores[discardIdx] = -1
-                        if (discard[i].suit == discard[j].suit):
-                            mean_scores[discardIdx] = -1
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif (abs(discard[0].value - discard[1].value) == 2):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif (discard[0].suit == discard[1].suit):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+        return new_discards, new_scores
     
     def ask_for_discards(self):
         """
@@ -249,20 +258,21 @@ class HeuristicAgentPlayer(Player):
 
         #print("cribbage: {} is choosing discards".format(self))
         deck = Deck().draw(52)
-        potential_cards = [n for n in deck if n not in self.hand]
         discards = []
-        mean_scores = []
+        scores = []
         for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
-            inner_scores = []
-            for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
-                inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
-            inner_scores = np.array(inner_scores)
             discards.append(discard)
-            mean_scores.append(inner_scores.mean())
-        
-        self.heuristicScoring(discards, mean_scores)
-        
-        return list(discards[np.argmin(mean_scores)])
+            scores.append(0)
+        discards, scores = self.expertStrategyHeuristic(discards, scores)
+        for discardIdx in range(len(discards)):
+            scores[discardIdx] = score_hand_heuristic([x for x in self.hand if x not in discards[discardIdx]])
+        if(len(scores) == 0):
+            for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+                discards.append(discard)
+                scores.append(0)
+            for discardIdx in range(len(discards)):
+                scores[discardIdx] = score_hand_heuristic([x for x in self.hand if x not in discards[discardIdx]])
+        return list(discards[np.argmin(scores)])
 
 
     def ask_for_play(self, previous_plays):
@@ -279,33 +289,5 @@ class HeuristicAgentPlayer(Player):
         max_index = np.argmax(scores)
 
         return plays[max_index]
-
-
-# class TrainedAIPlayer(Player):
-#     """
-#     A player that makes choices based on previous games
-#     """
-
-#     def __init__(self, name=""):
-#         # override this constructor becasue I want to
-#         # load the ML model in when we init AIPlayer instance
-#         self.name = name
-#         self.hand = []
-#         self.score = 0
-#         self.debug = False
-#         self.model = load_trained_model()  # trained model we can ask directly for plays
-
-#     def ask_for_input(self, play_vector):
-#         card = self.model.ask_for_pegging_play(play_vector, self.in_hand)
-#         card.ontable = True
-#         return card
-
-#     def ask_for_discards(self):
-#         cards = self.model.ask_model_for_discard(
-#             self.hand
-#         )  # note: returns card objects
-#         self.hand = [n for n in self.hand if n not in cards]
-#         return cards
-
 
 NondeterministicAIPlayer = RandomPlayer

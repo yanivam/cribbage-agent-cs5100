@@ -14,7 +14,7 @@ import time
 
 def playCribbageOnce(i):
     print(f"start process {i}")
-    randomPlayerTurn = [GreedyAgentPlayer('Player 1'), NondeterministicAIPlayer('Player 2')]
+    randomPlayerTurn = [HeuristicAgentPlayer('Player 1'), NondeterministicAIPlayer('Player 2')]
     random.shuffle(randomPlayerTurn)
     game = Game(randomPlayerTurn[0], randomPlayerTurn[1])
     try:
@@ -24,8 +24,8 @@ def playCribbageOnce(i):
         return win_game
 
 def play1000CribbageGames():
-    pool = multiprocessing.Pool(multiprocessing.cpu_count() - 1)
-    winners = pool.map(playCribbageOnce, range(99))
+    pool = multiprocessing.Pool(4)
+    winners = pool.map(playCribbageOnce, range(1000))
     pool.close()
     pool.join()
     return winners
@@ -53,5 +53,5 @@ def main():
     duration = time.time() - start_time
     print('Played 1000 games in ' + str(duration) + ' seconds')
 
-    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 99
+    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 1000
     print('Percentage won by greedy agent: ' + str(p_sum))
