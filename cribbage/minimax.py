@@ -96,10 +96,6 @@ class minimaxTree:
 
     # Initializes an expectimax tree of a specified depth
     def __init__(self, hand, sequence, current_sum, tree_depth):
-        # Initialize tree
-        # print("hand:", hand)
-        # print("sequence:", sequence)
-        # print("current sum:", current_sum)
         self.root = self.node(None, 0)
 
         # Consider all cards in hand that are legal moves
@@ -121,7 +117,6 @@ class minimaxTree:
         deck = Deck()
         for i in deck.cards:
             whole_deck.append(i)
-        #print("Whole deck: ", whole_deck)
 
         # Remove known cards from deck
         for i in hand:
@@ -145,14 +140,20 @@ class minimaxTree:
                 cnode.addChild(newChanceNode)
 
         # Go through all prob nodes and add regular nodes for opponent
-        for n in self.root.getChildren():
-            for m in n.getChildren():
+        for n in self.root.getChildren(): #cnode, dealer node
+            for m in n.getChildren(): #chanceNodes
                 testHand = deepcopy(hand)
                 testHand.remove(n.getCard())
                 testSequence = deepcopy(sequence)
                 testSequence.append(n.getCard())
                 newNode = self.node(m, -1*(self.scorePegging(testHand, testSequence, current_sum + n.getSumFromPlay(), m.getCard())))
                 m.addChild(newNode)
+
+        
+
+
+
+        
 
     # Searches the expectimax tree and recommends the card to be played
     # 0 for  no risk, 1 for medium risk, 2 for high risk

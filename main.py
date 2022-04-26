@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     run_time = 1
     if args.test_against == 'True':
-        run_time = 1000
+        run_time = 100
     game_records = []
     bar = tqdm(total=run_time)
 

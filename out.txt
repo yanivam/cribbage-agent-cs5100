@@ -1,602 +1,635 @@
 score tree(score=0) random(score=0)
-Turn card 2♠
-Counting starts with tree(score=0)
+Turn card A♠
+Counting starts with random(score=0)
 counting: [] 0
-tree(score=0) played Q♡
-counting: [Q♡] 10
-random(score=0) played 5♠
-counting: [Q♡, 5♠] 15
-tree(score=0) played 3♠
-counting: [Q♡, 5♠, 3♠] 18
+random(score=0) played J♢
+counting: [J♢] 10
+tree(score=0) played K♣
+counting: [J♢, K♣] 20
 random(score=0) played 8♣
-counting: [Q♡, 5♠, 3♠, 8♣] 26
->>> tree(score=0) [9♡, 6♣] I have to say 'go' on that one
+counting: [J♢, K♣, 8♣] 28
+>>> tree(score=0) [5♣, 8♡, 4♢] I have to say 'go' on that one
 that"s a "go", switching turns
-counting: [Q♡, 5♠, 3♠, 8♣] 26
->>> You nominated J♠ but that is not a legal play given your hand. You must play if you can
->>> You nominated J♠ but that is not a legal play given your hand. You must play if you can
->>> You nominated J♠ but that is not a legal play given your hand. You must play if you can
-random(score=0) played 4♣
-counting: [Q♡, 5♠, 3♠, 8♣, 4♣] 30
->>> tree(score=0) [9♡, 6♣] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
+counting: [J♢, K♣, 8♣] 28
+>>> You nominated 9♠ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 9♠ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 9♠ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 9♠ but that is not a legal play given your hand. You must play if you can
+random(score=0) played 3♣
+counted to 31, point for random(score=0)
 counting: [] 0
-tree(score=0) played 6♣
-counting: [6♣] 6
-random(score=0) played J♠
-counting: [6♣, J♠] 16
-tree(score=0) played 9♡
-counting: [6♣, J♠, 9♡] 25
->>> I have no cards random(score=0)
-that"s a "go", switching turns
-counting: [6♣, J♠, 9♡] 25
->>> I have no cards tree(score=0)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=4) [Q♡, 3♠, 6♣, 9♡] 4
-dealer random(score=5) [5♠, 8♣, 4♣, J♠] 5
-crib random(score=12) [10♡, 3♢, 4♠, 6♠] 7
-Turn card 7♡
-Counting starts with random(score=12)
-counting: [] 0
-random(score=12) played 8♡
-counting: [8♡] 8
-tree(score=4) played J♠
-counting: [8♡, J♠] 18
-random(score=12) played Q♡
-counting: [8♡, J♠, Q♡] 28
-tree(score=4) played A♣
-counting: [8♡, J♠, Q♡, A♣] 29
->>> random(score=12) [K♠, 8♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [8♡, J♠, Q♡, A♣] 29
->>> tree(score=4) [9♠, 6♠] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-random(score=12) played K♠
-counting: [K♠] 10
-tree(score=4) played 6♠
-counting: [K♠, 6♠] 16
-random(score=12) played 8♣
-counting: [K♠, 6♠, 8♣] 24
->>> tree(score=4) [9♠] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [K♠, 6♠, 8♣] 24
->>> I have no cards random(score=12)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards random(score=12)
-that"s a "go", switching turns
-counting: [] 0
-tree(score=4) played 9♠
+random(score=1) played 9♠
 counting: [9♠] 9
->>> I have no cards random(score=12)
+tree(score=0) played 4♢
+counting: [9♠, 4♢] 13
+>>> I have no cards random(score=1)
+that"s a "go", switching turns
+counting: [9♠, 4♢] 13
+tree(score=0) played 8♡
+counting: [9♠, 4♢, 8♡] 21
+>>> I have no cards random(score=1)
 "Go!" has already been said, so starting a new count at 0
-Counting hands
-pone random(score=18) [8♡, Q♡, K♠, 8♣] 6
-dealer tree(score=6) [J♠, A♣, 6♠, 9♠] 2
-crib tree(score=9) [9♡, 6♢, 4♠, J♡] 3
-Turn card 8♡
-Counting starts with tree(score=9)
+pone has no cards
 counting: [] 0
-tree(score=9) played 5♣
+>>> I have no cards random(score=1)
+that"s a "go", switching turns
+counting: [] 0
+tree(score=0) played 5♣
 counting: [5♣] 5
-random(score=18) played 10♡
-counting: [5♣, 10♡] 15
-tree(score=9) played 7♢
-counting: [5♣, 10♡, 7♢] 22
-random(score=18) played 9♢
-counted to 31, point for random(score=18)
-counting: [] 0
-tree(score=9) played Q♣
-counting: [Q♣] 10
-random(score=19) played 10♣
-counting: [Q♣, 10♣] 20
-tree(score=9) played 6♢
-counting: [Q♣, 10♣, 6♢] 26
->>> random(score=19) [J♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [Q♣, 10♣, 6♢] 26
->>> I have no cards tree(score=9)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards tree(score=9)
-that"s a "go", switching turns
-counting: [] 0
-random(score=19) played J♣
-counting: [J♣] 10
->>> I have no cards tree(score=9)
+>>> I have no cards random(score=1)
 "Go!" has already been said, so starting a new count at 0
 Counting hands
-pone tree(score=17) [5♣, 7♢, Q♣, 6♢] 8
-dealer random(score=25) [10♡, 9♢, 10♣, J♣] 6
-crib random(score=33) [A♣, 9♣, 6♡, A♢] 8
-Turn card K♡
-Counting starts with random(score=33)
+pone random(score=1) [J♢, 8♣, 3♣, 9♠] 0
+dealer tree(score=4) [K♣, 4♢, 8♡, 5♣] 4
+crib tree(score=13) [A♡, Q♣, 2♠, 3♢] 9
+Turn card 3♠
+Counting starts with tree(score=13)
 counting: [] 0
-random(score=33) played 7♢
-counting: [7♢] 7
-tree(score=17) played 10♢
-counting: [7♢, 10♢] 17
-random(score=33) played 7♠
-counting: [7♢, 10♢, 7♠] 24
->>> tree(score=17) [K♢, 9♣, 9♢] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [7♢, 10♢, 7♠] 24
-random(score=33) played 3♢
-counting: [7♢, 10♢, 7♠, 3♢] 27
->>> tree(score=17) [K♢, 9♣, 9♢] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-random(score=33) played 7♡
-counting: [7♡] 7
-tree(score=17) played 9♢
-counting: [7♡, 9♢] 16
->>> I have no cards random(score=33)
-that"s a "go", switching turns
-counting: [7♡, 9♢] 16
-tree(score=17) played 9♣
-counting: [7♡, 9♢, 9♣] 25
->>> I have no cards random(score=33)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards random(score=33)
-that"s a "go", switching turns
-counting: [] 0
-tree(score=17) played K♢
-counting: [K♢] 10
->>> I have no cards random(score=33)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone random(score=39) [7♢, 7♠, 3♢, 7♡] 6
-dealer tree(score=21) [10♢, 9♢, 9♣, K♢] 4
-crib tree(score=23) [4♢, 2♣, 10♠, K♠] 2
-Turn card 5♣
-Counting starts with tree(score=23)
-counting: [] 0
-tree(score=23) played Q♠
-counting: [Q♠] 10
-random(score=39) played 10♢
-counting: [Q♠, 10♢] 20
-tree(score=23) played 7♠
-counting: [Q♠, 10♢, 7♠] 27
-random(score=39) played A♡
-counting: [Q♠, 10♢, 7♠, A♡] 28
->>> tree(score=23) [K♡, K♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [Q♠, 10♢, 7♠, A♡] 28
->>> random(score=39) [6♠, J♢] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-tree(score=23) played K♣
-counting: [K♣] 10
-random(score=39) played J♢
-counting: [K♣, J♢] 20
-tree(score=23) played K♡
-counting: [K♣, J♢, K♡] 30
->>> random(score=39) [6♠] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [K♣, J♢, K♡] 30
->>> I have no cards tree(score=23)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards tree(score=23)
-that"s a "go", switching turns
-counting: [] 0
-random(score=39) played 6♠
-counting: [6♠] 6
->>> I have no cards tree(score=23)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=31) [Q♠, 7♠, K♣, K♡] 8
-dealer random(score=43) [10♢, A♡, J♢, 6♠] 4
-crib random(score=51) [6♡, 7♢, 9♢, 4♡] 8
-Turn card 6♠
-Counting starts with random(score=51)
-counting: [] 0
-random(score=51) played A♡
+tree(score=13) played A♡
 counting: [A♡] 1
-tree(score=31) played 2♢
+random(score=1) played 2♢
 counting: [A♡, 2♢] 3
-random(score=51) played K♣
-counting: [A♡, 2♢, K♣] 13
-tree(score=31) played Q♣
-counting: [A♡, 2♢, K♣, Q♣] 23
-random(score=51) played 3♣
-counting: [A♡, 2♢, K♣, Q♣, 3♣] 26
->>> tree(score=31) [9♡, J♢] I have to say 'go' on that one
+tree(score=13) played Q♣
+counting: [A♡, 2♢, Q♣] 13
+random(score=1) played 7♠
+counting: [A♡, 2♢, Q♣, 7♠] 20
+tree(score=13) played 10♠
+counting: [A♡, 2♢, Q♣, 7♠, 10♠] 30
+>>> random(score=1) [7♡, 7♢] I have to say 'go' on that one
 that"s a "go", switching turns
-counting: [A♡, 2♢, K♣, Q♣, 3♣] 26
->>> random(score=51) [8♢] I have to say 'go' on that one
+counting: [A♡, 2♢, Q♣, 7♠, 10♠] 30
+>>> tree(score=13) [8♢] I have to say 'go' on that one
 "Go!" has already been said, so starting a new count at 0
 counting: [] 0
-random(score=51) played 8♢
+tree(score=13) played 8♢
 counting: [8♢] 8
-tree(score=31) played J♢
-counting: [8♢, J♢] 18
->>> I have no cards random(score=51)
+random(score=1) played 7♡
+counting: [8♢, 7♡] 15
+>>> I have no cards tree(score=13)
 that"s a "go", switching turns
-counting: [8♢, J♢] 18
-tree(score=31) played 9♡
-counting: [8♢, J♢, 9♡] 27
->>> I have no cards random(score=51)
+counting: [8♢, 7♡] 15
+random(score=1) played 7♢
+counting: [8♢, 7♡, 7♢] 22
+>>> I have no cards tree(score=13)
 "Go!" has already been said, so starting a new count at 0
 Counting hands
-pone random(score=53) [A♡, K♣, 3♣, 8♢] 2
-dealer tree(score=33) [2♢, Q♣, J♢, 9♡] 2
-crib tree(score=37) [K♡, 7♡, 9♣, K♢] 4
-Turn card K♡
-Counting starts with tree(score=37)
+pone tree(score=13) [A♡, Q♣, 10♠, 8♢] 0
+dealer random(score=7) [2♢, 7♠, 7♡, 7♢] 6
+crib random(score=16) [3♡, 4♠, K♢, 5♠] 9
+Turn card 3♠
+Counting starts with random(score=16)
 counting: [] 0
-tree(score=37) played 5♠
-counting: [5♠] 5
-random(score=53) played 6♣
-counting: [5♠, 6♣] 11
-tree(score=37) played 6♡
-counting: [5♠, 6♣, 6♡] 17
-random(score=53) played 6♢
-counting: [5♠, 6♣, 6♡, 6♢] 23
-tree(score=37) played 4♡
-counting: [5♠, 6♣, 6♡, 6♢, 4♡] 27
->>> random(score=53) [J♣, 9♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [5♠, 6♣, 6♡, 6♢, 4♡] 27
->>> tree(score=37) [K♠] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
+random(score=16) played 4♡
+counting: [4♡] 4
+tree(score=13) played 10♠
+counting: [4♡, 10♠] 14
+random(score=16) played K♣
+counting: [4♡, 10♠, K♣] 24
+tree(score=13) played 7♢
+counted to 31, point for tree(score=13)
 counting: [] 0
-tree(score=37) played K♠
-counting: [K♠] 10
-random(score=53) played 9♣
-counting: [K♠, 9♣] 19
->>> I have no cards tree(score=37)
+random(score=16) played Q♠
+counting: [Q♠] 10
+tree(score=14) played 10♢
+counting: [Q♠, 10♢] 20
+random(score=16) played 3♣
+counting: [Q♠, 10♢, 3♣] 23
+>>> tree(score=14) [K♢] I have to say 'go' on that one
 that"s a "go", switching turns
-counting: [K♠, 9♣] 19
-random(score=53) played J♣
-counting: [K♠, 9♣, J♣] 29
->>> I have no cards tree(score=37)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=48) [5♠, 6♡, 4♡, K♠] 11
-dealer random(score=59) [6♣, 6♢, 9♣, J♣] 6
-crib random(score=65) [4♢, 2♠, 9♠, 9♢] 6
-Turn card 8♠
-Counting starts with random(score=65)
-counting: [] 0
-random(score=65) played K♡
-counting: [K♡] 10
-tree(score=48) played 8♢
-counting: [K♡, 8♢] 18
-random(score=65) played Q♣
-counting: [K♡, 8♢, Q♣] 28
->>> tree(score=48) [10♣, 8♣, K♢] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [K♡, 8♢, Q♣] 28
->>> random(score=65) [J♢, 8♡] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-random(score=65) played J♢
-counting: [J♢] 10
-tree(score=48) played K♢
-counting: [J♢, K♢] 20
-random(score=65) played 8♡
-counting: [J♢, K♢, 8♡] 28
->>> tree(score=48) [10♣, 8♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [J♢, K♢, 8♡] 28
->>> I have no cards random(score=65)
+counting: [Q♠, 10♢, 3♣] 23
+>>> I have no cards random(score=16)
 "Go!" has already been said, so starting a new count at 0
 pone has no cards
 counting: [] 0
->>> I have no cards random(score=65)
+>>> I have no cards random(score=16)
 that"s a "go", switching turns
 counting: [] 0
-tree(score=48) played 8♣
-counting: [8♣] 8
->>> I have no cards random(score=65)
+tree(score=14) played K♢
+counting: [K♢] 10
+>>> I have no cards random(score=16)
 "Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=18) [4♡, K♣, Q♠, 3♣] 2
+dealer tree(score=16) [10♠, 7♢, 10♢, K♢] 2
+crib tree(score=21) [J♠, K♡, A♡, 5♡] 5
+Turn card 6♠
+Counting starts with tree(score=21)
+counting: [] 0
+tree(score=21) played 10♢
+counting: [10♢] 10
+random(score=18) played A♡
+counting: [10♢, A♡] 11
+tree(score=21) played A♣
+counting: [10♢, A♡, A♣] 12
+random(score=18) played Q♠
+counting: [10♢, A♡, A♣, Q♠] 22
+tree(score=21) played 4♠
+counting: [10♢, A♡, A♣, Q♠, 4♠] 26
+random(score=18) played 2♣
+counting: [10♢, A♡, A♣, Q♠, 4♠, 2♣] 28
+tree(score=21) played 3♠
+counted to 31, point for tree(score=21)
 pone has no cards
 counting: [] 0
->>> I have no cards random(score=65)
+>>> I have no cards tree(score=22)
 that"s a "go", switching turns
 counting: [] 0
-tree(score=48) played 10♣
-counting: [10♣] 10
->>> I have no cards random(score=65)
+random(score=18) played 6♡
+counting: [6♡] 6
+>>> I have no cards tree(score=22)
 "Go!" has already been said, so starting a new count at 0
 Counting hands
-pone random(score=70) [K♡, Q♣, J♢, 8♡] 5
-dealer tree(score=54) [8♢, K♢, 8♣, 10♣] 6
-crib tree(score=60) [A♢, 6♠, A♠, Q♠] 6
-Turn card 8♡
-Counting starts with tree(score=60)
-counting: [] 0
-tree(score=60) played 5♠
-counting: [5♠] 5
-random(score=70) played A♣
-counting: [5♠, A♣] 6
-tree(score=60) played 5♢
-counting: [5♠, A♣, 5♢] 11
-random(score=70) played 4♢
-counting: [5♠, A♣, 5♢, 4♢] 15
-tree(score=60) played 8♢
-counting: [5♠, A♣, 5♢, 4♢, 8♢] 23
-random(score=70) played 2♣
-counting: [5♠, A♣, 5♢, 4♢, 8♢, 2♣] 25
-tree(score=60) played 6♣
-counted to 31, point for tree(score=60)
-pone has no cards
-counting: [] 0
->>> I have no cards tree(score=61)
-that"s a "go", switching turns
-counting: [] 0
-random(score=70) played A♠
-counting: [A♠] 1
->>> I have no cards tree(score=61)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=65) [5♠, 5♢, 8♢, 6♣] 4
-dealer random(score=76) [A♣, 4♢, 2♣, A♠] 6
-crib random(score=78) [4♠, 6♡, 10♡, 3♣] 2
-Turn card 10♣
-Counting starts with random(score=78)
-counting: [] 0
-random(score=78) played 8♣
-counting: [8♣] 8
-tree(score=65) played 5♣
-counting: [8♣, 5♣] 13
-random(score=78) played 7♣
-counting: [8♣, 5♣, 7♣] 20
-tree(score=65) played 2♠
-counting: [8♣, 5♣, 7♣, 2♠] 22
->>> random(score=78) [J♣, Q♡] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [8♣, 5♣, 7♣, 2♠] 22
-tree(score=65) played 4♣
-counting: [8♣, 5♣, 7♣, 2♠, 4♣] 26
->>> random(score=78) [J♣, Q♡] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-random(score=78) played Q♡
-counting: [Q♡] 10
-tree(score=65) played 3♡
-counting: [Q♡, 3♡] 13
-random(score=78) played J♣
-counting: [Q♡, 3♡, J♣] 23
->>> I have no cards tree(score=65)
-that"s a "go", switching turns
-counting: [Q♡, 3♡, J♣] 23
->>> I have no cards random(score=78)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone random(score=84) [8♣, 7♣, Q♡, J♣] 6
-dealer tree(score=73) [5♣, 2♠, 4♣, 3♡] 8
-crib tree(score=77) [K♢, 9♣, 10♢, K♠] 4
+pone tree(score=24) [10♢, A♣, 4♠, 3♠] 2
+dealer random(score=22) [A♡, Q♠, 2♣, 6♡] 4
+crib random(score=26) [2♢, 6♢, 10♡, 5♣] 4
 Turn card 4♣
-Counting starts with tree(score=77)
+Counting starts with random(score=26)
 counting: [] 0
-tree(score=77) played J♢
-counting: [J♢] 10
-random(score=84) played 3♣
-counting: [J♢, 3♣] 13
-tree(score=77) played 10♢
-counting: [J♢, 3♣, 10♢] 23
-random(score=84) played A♢
-counting: [J♢, 3♣, 10♢, A♢] 24
-tree(score=77) played 7♠
-counted to 31, point for tree(score=77)
-counting: [] 0
-tree(score=78) played 5♣
-counting: [5♣] 5
-random(score=84) played 7♢
-counting: [5♣, 7♢] 12
->>> I have no cards tree(score=78)
+random(score=26) played K♡
+counting: [K♡] 10
+tree(score=24) played 3♡
+counting: [K♡, 3♡] 13
+random(score=26) played 3♠
+counting: [K♡, 3♡, 3♠] 16
+tree(score=24) played 4♢
+counting: [K♡, 3♡, 3♠, 4♢] 20
+random(score=26) played J♡
+counting: [K♡, 3♡, 3♠, 4♢, J♡] 30
+>>> tree(score=24) [8♡, 7♡] I have to say 'go' on that one
 that"s a "go", switching turns
-counting: [5♣, 7♢] 12
-random(score=84) played 4♢
-counting: [5♣, 7♢, 4♢] 16
->>> I have no cards tree(score=78)
+counting: [K♡, 3♡, 3♠, 4♢, J♡] 30
+>>> random(score=26) [Q♡] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+random(score=26) played Q♡
+counting: [Q♡] 10
+tree(score=24) played 7♡
+counting: [Q♡, 7♡] 17
+>>> I have no cards random(score=26)
+that"s a "go", switching turns
+counting: [Q♡, 7♡] 17
+tree(score=24) played 8♡
+counting: [Q♡, 7♡, 8♡] 25
+>>> I have no cards random(score=26)
 "Go!" has already been said, so starting a new count at 0
 Counting hands
-pone tree(score=82) [J♢, 10♢, 7♠, 5♣] 4
-dealer random(score=92) [3♣, A♢, 7♢, 4♢] 8
-crib random(score=94) [K♠, J♠, 10♠, 4♠] 2
-Turn card 6♡
+pone random(score=29) [K♡, 3♠, J♡, Q♡] 3
+dealer tree(score=34) [3♡, 4♢, 7♡, 8♡] 10
+crib tree(score=34) [3♣, K♠, 7♢, Q♢] 0
+Turn card J♢
+Counting starts with tree(score=34)
+counting: [] 0
+tree(score=34) played K♣
+counting: [K♣] 10
+random(score=29) played 9♠
+counting: [K♣, 9♠] 19
+tree(score=34) played 6♠
+counting: [K♣, 9♠, 6♠] 25
+>>> You nominated 10♢ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 10♢ but that is not a legal play given your hand. You must play if you can
+random(score=29) played 5♠
+counting: [K♣, 9♠, 6♠, 5♠] 30
+>>> tree(score=34) [3♢, 10♡] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [K♣, 9♠, 6♠, 5♠] 30
+>>> random(score=29) [5♢, 10♢] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+tree(score=34) played 10♡
+counting: [10♡] 10
+random(score=29) played 5♢
+counting: [10♡, 5♢] 15
+tree(score=34) played 3♢
+counting: [10♡, 5♢, 3♢] 18
+random(score=29) played 10♢
+counting: [10♡, 5♢, 3♢, 10♢] 28
+>>> I have no cards tree(score=34)
+that"s a "go", switching turns
+counting: [10♡, 5♢, 3♢, 10♢] 28
+>>> I have no cards random(score=29)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=34) [K♣, 6♠, 10♡, 3♢] 0
+dealer random(score=42) [9♠, 5♠, 5♢, 10♢] 13
+crib random(score=44) [J♠, A♡, 3♣, 10♣] 2
+Turn card 8♡
+Counting starts with random(score=44)
+counting: [] 0
+random(score=44) played 7♢
+counting: [7♢] 7
+tree(score=34) played 4♢
+counting: [7♢, 4♢] 11
+random(score=44) played K♢
+counting: [7♢, 4♢, K♢] 21
+tree(score=34) played 3♡
+counting: [7♢, 4♢, K♢, 3♡] 24
+random(score=44) played 4♡
+counting: [7♢, 4♢, K♢, 3♡, 4♡] 28
+tree(score=34) played 2♠
+counting: [7♢, 4♢, K♢, 3♡, 4♡, 2♠] 30
+>>> random(score=44) [9♠] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [7♢, 4♢, K♢, 3♡, 4♡, 2♠] 30
+>>> tree(score=34) [10♡] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+random(score=44) played 9♠
+counting: [9♠] 9
+tree(score=34) played 10♡
+counting: [9♠, 10♡] 19
+>>> I have no cards random(score=44)
+that"s a "go", switching turns
+counting: [9♠, 10♡] 19
+>>> I have no cards tree(score=34)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=49) [7♢, K♢, 4♡, 9♠] 5
+dealer tree(score=41) [4♢, 3♡, 2♠, 10♡] 7
+crib tree(score=45) [8♠, A♠, A♡, 3♢] 4
+Turn card 3♢
+Counting starts with tree(score=45)
+counting: [] 0
+tree(score=45) played Q♡
+counting: [Q♡] 10
+random(score=49) played K♡
+counting: [Q♡, K♡] 20
+tree(score=45) played 4♠
+counting: [Q♡, K♡, 4♠] 24
+>>> You nominated 10♢ but that is not a legal play given your hand. You must play if you can
+>>> You nominated J♣ but that is not a legal play given your hand. You must play if you can
+>>> You nominated J♣ but that is not a legal play given your hand. You must play if you can
+>>> You nominated J♣ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 10♢ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 10♢ but that is not a legal play given your hand. You must play if you can
+>>> You nominated J♣ but that is not a legal play given your hand. You must play if you can
+random(score=49) played 4♣
+counting: [Q♡, K♡, 4♠, 4♣] 28
+>>> tree(score=45) [7♡, 5♣] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [Q♡, K♡, 4♠, 4♣] 28
+>>> random(score=49) [J♣, 10♢] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+tree(score=45) played 5♣
+counting: [5♣] 5
+random(score=49) played J♣
+counting: [5♣, J♣] 15
+tree(score=45) played 7♡
+counting: [5♣, J♣, 7♡] 22
+>>> random(score=49) [10♢] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [5♣, J♣, 7♡] 22
+>>> I have no cards tree(score=45)
+"Go!" has already been said, so starting a new count at 0
+pone has no cards
+counting: [] 0
+>>> I have no cards tree(score=45)
+that"s a "go", switching turns
+counting: [] 0
+random(score=49) played 10♢
+counting: [10♢] 10
+>>> I have no cards tree(score=45)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=52) [Q♡, 4♠, 5♣, 7♡] 7
+dealer random(score=49) [K♡, 4♣, J♣, 10♢] 0
+crib random(score=52) [8♠, J♢, 8♣, 9♠] 3
+Turn card J♠
+Counting starts with random(score=52)
+counting: [] 0
+random(score=52) played 6♠
+counting: [6♠] 6
+tree(score=52) played 6♡
+counting: [6♠, 6♡] 12
+random(score=52) played 10♣
+counting: [6♠, 6♡, 10♣] 22
+tree(score=52) played 6♢
+counting: [6♠, 6♡, 10♣, 6♢] 28
+>>> random(score=52) [J♡, K♣] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [6♠, 6♡, 10♣, 6♢] 28
+>>> tree(score=52) [8♢, 8♠] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+random(score=52) played K♣
+counting: [K♣] 10
+tree(score=52) played 8♠
+counting: [K♣, 8♠] 18
+random(score=52) played J♡
+counting: [K♣, 8♠, J♡] 28
+>>> tree(score=52) [8♢] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [K♣, 8♠, J♡] 28
+>>> I have no cards random(score=52)
+"Go!" has already been said, so starting a new count at 0
+pone has no cards
+counting: [] 0
+>>> I have no cards random(score=52)
+that"s a "go", switching turns
+counting: [] 0
+tree(score=52) played 8♢
+counting: [8♢] 8
+>>> I have no cards random(score=52)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=54) [6♠, 10♣, K♣, J♡] 2
+dealer tree(score=56) [6♡, 6♢, 8♠, 8♢] 4
+crib tree(score=62) [2♣, 2♡, 2♠, K♢] 6
+Turn card 2♡
+Counting starts with tree(score=62)
+counting: [] 0
+tree(score=62) played 6♣
+counting: [6♣] 6
+random(score=54) played 5♣
+counting: [6♣, 5♣] 11
+tree(score=62) played 3♠
+counting: [6♣, 5♣, 3♠] 14
+random(score=54) played 9♢
+counting: [6♣, 5♣, 3♠, 9♢] 23
+tree(score=62) played 8♡
+counted to 31, point for tree(score=62)
+counting: [] 0
+tree(score=63) played 10♢
+counting: [10♢] 10
+random(score=54) played A♡
+counting: [10♢, A♡] 11
+>>> I have no cards tree(score=63)
+that"s a "go", switching turns
+counting: [10♢, A♡] 11
+random(score=54) played J♠
+counting: [10♢, A♡, J♠] 21
+>>> I have no cards tree(score=63)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=65) [6♣, 3♠, 8♡, 10♢] 2
+dealer random(score=58) [5♣, 9♢, A♡, J♠] 4
+crib random(score=62) [7♠, 7♡, 5♢, 10♣] 4
+Turn card 7♢
+Counting starts with random(score=62)
+counting: [] 0
+random(score=62) played 5♣
+counting: [5♣] 5
+tree(score=65) played 9♣
+counting: [5♣, 9♣] 14
+random(score=62) played J♠
+counting: [5♣, 9♣, J♠] 24
+tree(score=65) played 7♡
+counted to 31, point for tree(score=65)
+counting: [] 0
+random(score=62) played 8♠
+counting: [8♠] 8
+tree(score=66) played 2♣
+counting: [8♠, 2♣] 10
+random(score=62) played A♡
+counting: [8♠, 2♣, A♡] 11
+tree(score=66) played 10♣
+counting: [8♠, 2♣, A♡, 10♣] 21
+>>> I have no cards random(score=62)
+that"s a "go", switching turns
+counting: [8♠, 2♣, A♡, 10♣] 21
+>>> I have no cards tree(score=66)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=66) [5♣, J♠, 8♠, A♡] 4
+dealer tree(score=68) [9♣, 7♡, 2♣, 10♣] 2
+crib tree(score=70) [9♢, 2♠, Q♢, 4♣] 2
+Turn card A♡
+Counting starts with tree(score=70)
+counting: [] 0
+tree(score=70) played 4♣
+counting: [4♣] 4
+random(score=66) played 2♢
+counting: [4♣, 2♢] 6
+tree(score=70) played 4♠
+counting: [4♣, 2♢, 4♠] 10
+random(score=66) played 9♡
+counting: [4♣, 2♢, 4♠, 9♡] 19
+tree(score=70) played 6♠
+counting: [4♣, 2♢, 4♠, 9♡, 6♠] 25
+>>> You nominated 8♡ but that is not a legal play given your hand. You must play if you can
+random(score=66) played 5♡
+counting: [4♣, 2♢, 4♠, 9♡, 6♠, 5♡] 30
+>>> tree(score=70) [6♢] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [4♣, 2♢, 4♠, 9♡, 6♠, 5♡] 30
+>>> random(score=66) [8♡] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+tree(score=70) played 6♢
+counting: [6♢] 6
+random(score=66) played 8♡
+counting: [6♢, 8♡] 14
+>>> I have no cards tree(score=70)
+that"s a "go", switching turns
+counting: [6♢, 8♡] 14
+>>> I have no cards random(score=66)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=78) [4♣, 4♠, 6♠, 6♢] 8
+dealer random(score=70) [2♢, 9♡, 5♡, 8♡] 4
+crib random(score=72) [J♢, 7♡, 2♣, 8♣] 2
+Turn card Q♡
+Counting starts with random(score=72)
+counting: [] 0
+random(score=72) played 5♡
+counting: [5♡] 5
+tree(score=78) played 3♢
+counting: [5♡, 3♢] 8
+random(score=72) played J♣
+counting: [5♡, 3♢, J♣] 18
+tree(score=78) played Q♣
+counting: [5♡, 3♢, J♣, Q♣] 28
+>>> random(score=72) [7♣, 10♡] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [5♡, 3♢, J♣, Q♣] 28
+tree(score=78) played 2♡
+counting: [5♡, 3♢, J♣, Q♣, 2♡] 30
+>>> random(score=72) [7♣, 10♡] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+random(score=72) played 10♡
+counting: [10♡] 10
+tree(score=78) played 6♠
+counting: [10♡, 6♠] 16
+random(score=72) played 7♣
+counting: [10♡, 6♠, 7♣] 23
+>>> I have no cards tree(score=78)
+that"s a "go", switching turns
+counting: [10♡, 6♠, 7♣] 23
+>>> I have no cards random(score=72)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=81) [5♡, J♣, 10♡, 7♣] 9
+dealer tree(score=84) [3♢, Q♣, 2♡, 6♠] 6
+crib tree(score=90) [3♠, 6♡, 6♣, Q♠] 6
+Turn card Q♣
+Counting starts with tree(score=90)
+counting: [] 0
+tree(score=90) played 7♡
+counting: [7♡] 7
+random(score=81) played 8♣
+counting: [7♡, 8♣] 15
+tree(score=90) played 5♠
+counting: [7♡, 8♣, 5♠] 20
+random(score=81) played A♡
+counting: [7♡, 8♣, 5♠, A♡] 21
+tree(score=90) played 2♣
+counting: [7♡, 8♣, 5♠, A♡, 2♣] 23
+random(score=81) played 8♢
+counted to 31, point for random(score=81)
+counting: [] 0
+tree(score=90) played 8♠
+counting: [8♠] 8
+random(score=82) played 3♠
+counting: [8♠, 3♠] 11
+>>> I have no cards tree(score=90)
+that"s a "go", switching turns
+counting: [8♠, 3♠] 11
+>>> I have no cards random(score=82)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=96) [7♡, 5♠, 2♣, 8♠] 6
+dealer random(score=84) [8♣, A♡, 8♢, 3♠] 2
+crib random(score=94) [10♡, 5♡, 5♢, 4♣] 10
+Turn card 6♢
 Counting starts with random(score=94)
 counting: [] 0
-random(score=94) played Q♡
-counting: [Q♡] 10
-tree(score=82) played 9♠
-counting: [Q♡, 9♠] 19
-random(score=94) played 9♢
-counting: [Q♡, 9♠, 9♢] 28
->>> tree(score=82) [J♢, 8♢, Q♢] I have to say 'go' on that one
+random(score=94) played 10♣
+counting: [10♣] 10
+tree(score=96) played 2♠
+counting: [10♣, 2♠] 12
+random(score=94) played K♢
+counting: [10♣, 2♠, K♢] 22
+tree(score=96) played 8♣
+counting: [10♣, 2♠, K♢, 8♣] 30
+>>> You nominated K♣ but that is not a legal play given your hand. You must play if you can
+>>> You nominated K♣ but that is not a legal play given your hand. You must play if you can
+random(score=94) played A♢
+counted to 31, point for random(score=94)
+counting: [] 0
+random(score=95) played K♣
+counting: [K♣] 10
+tree(score=96) played Q♣
+counting: [K♣, Q♣] 20
+>>> I have no cards random(score=95)
 that"s a "go", switching turns
-counting: [Q♡, 9♠, 9♢] 28
->>> random(score=94) [Q♠, 4♢] I have to say 'go' on that one
+counting: [K♣, Q♣] 20
+tree(score=96) played 10♡
+counting: [K♣, Q♣, 10♡] 30
+>>> I have no cards random(score=95)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone random(score=97) [10♣, K♢, A♢, K♣] 2
+dealer tree(score=96) [2♠, 8♣, Q♣, 10♡] 0
+crib tree(score=100) [9♣, 2♡, 2♢, A♠] 4
+Turn card 6♣
+Counting starts with tree(score=100)
+counting: [] 0
+tree(score=100) played Q♣
+counting: [Q♣] 10
+random(score=97) played 8♡
+counting: [Q♣, 8♡] 18
+tree(score=100) played Q♢
+counting: [Q♣, 8♡, Q♢] 28
+>>> You nominated 5♠ but that is not a legal play given your hand. You must play if you can
+>>> You nominated 5♠ but that is not a legal play given your hand. You must play if you can
+random(score=97) played 2♣
+counting: [Q♣, 8♡, Q♢, 2♣] 30
+>>> tree(score=100) [10♠, K♠] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [Q♣, 8♡, Q♢, 2♣] 30
+>>> random(score=97) [2♠, 5♠] I have to say 'go' on that one
 "Go!" has already been said, so starting a new count at 0
 counting: [] 0
-random(score=94) played Q♠
-counting: [Q♠] 10
-tree(score=82) played Q♢
-counting: [Q♠, Q♢] 20
-random(score=94) played 4♢
-counting: [Q♠, Q♢, 4♢] 24
->>> tree(score=82) [J♢, 8♢] I have to say 'go' on that one
+tree(score=100) played K♠
+counting: [K♠] 10
+random(score=97) played 2♠
+counting: [K♠, 2♠] 12
+tree(score=100) played 10♠
+counting: [K♠, 2♠, 10♠] 22
+random(score=97) played 5♠
+counting: [K♠, 2♠, 10♠, 5♠] 27
+>>> I have no cards tree(score=100)
 that"s a "go", switching turns
-counting: [Q♠, Q♢, 4♢] 24
->>> I have no cards random(score=94)
+counting: [K♠, 2♠, 10♠, 5♠] 27
+>>> I have no cards random(score=97)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=102) [Q♣, Q♢, K♠, 10♠] 2
+dealer random(score=105) [8♡, 2♣, 2♠, 5♠] 8
+crib random(score=107) [4♡, 9♢, 10♢, 3♠] 2
+Turn card A♠
+Counting starts with random(score=107)
+counting: [] 0
+random(score=107) played A♢
+counting: [A♢] 1
+tree(score=102) played 2♣
+counting: [A♢, 2♣] 3
+random(score=107) played 6♡
+counting: [A♢, 2♣, 6♡] 9
+tree(score=102) played K♡
+counting: [A♢, 2♣, 6♡, K♡] 19
+random(score=107) played 8♢
+counting: [A♢, 2♣, 6♡, K♡, 8♢] 27
+>>> tree(score=102) [Q♠, 5♡] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [A♢, 2♣, 6♡, K♡, 8♢] 27
+random(score=107) played 2♠
+counting: [A♢, 2♣, 6♡, K♡, 8♢, 2♠] 29
+>>> tree(score=102) [Q♠, 5♡] I have to say 'go' on that one
 "Go!" has already been said, so starting a new count at 0
 pone has no cards
 counting: [] 0
->>> I have no cards random(score=94)
+>>> I have no cards random(score=107)
 that"s a "go", switching turns
 counting: [] 0
-tree(score=82) played 8♢
-counting: [8♢] 8
->>> I have no cards random(score=94)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards random(score=94)
-that"s a "go", switching turns
-counting: [] 0
-tree(score=82) played J♢
-counting: [J♢] 10
->>> I have no cards random(score=94)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone random(score=98) [Q♡, 9♢, Q♠, 4♢] 4
-dealer tree(score=84) [9♠, Q♢, 8♢, J♢] 2
-crib tree(score=92) [6♣, 3♡, 5♣, 9♡] 8
-Turn card K♠
-Counting starts with tree(score=92)
-counting: [] 0
-tree(score=92) played J♡
-counting: [J♡] 10
-random(score=98) played 9♡
-counting: [J♡, 9♡] 19
-tree(score=92) played 5♣
-counting: [J♡, 9♡, 5♣] 24
->>> random(score=98) [10♡, Q♡, 8♢] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [J♡, 9♡, 5♣] 24
-tree(score=92) played 4♠
-counting: [J♡, 9♡, 5♣, 4♠] 28
->>> random(score=98) [10♡, Q♡, 8♢] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-tree(score=92) played 3♣
-counting: [3♣] 3
-random(score=98) played Q♡
-counting: [3♣, Q♡] 13
->>> I have no cards tree(score=92)
-that"s a "go", switching turns
-counting: [3♣, Q♡] 13
-random(score=98) played 10♡
-counting: [3♣, Q♡, 10♡] 23
->>> I have no cards tree(score=92)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards tree(score=92)
-that"s a "go", switching turns
-counting: [] 0
-random(score=98) played 8♢
-counting: [8♢] 8
->>> I have no cards tree(score=92)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=99) [J♡, 5♣, 4♠, 3♣] 7
-dealer random(score=101) [9♡, Q♡, 10♡, 8♢] 3
-crib random(score=103) [7♡, 10♢, A♡, K♢] 2
-Turn card 8♠
-Counting starts with random(score=103)
-counting: [] 0
-random(score=103) played 2♠
-counting: [2♠] 2
-tree(score=99) played 10♢
-counting: [2♠, 10♢] 12
-random(score=103) played K♠
-counting: [2♠, 10♢, K♠] 22
-tree(score=99) played 2♣
-counting: [2♠, 10♢, K♠, 2♣] 24
->>> random(score=103) [9♢, 8♡] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [2♠, 10♢, K♠, 2♣] 24
->>> tree(score=99) [10♠, Q♠] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-random(score=103) played 9♢
-counting: [9♢] 9
-tree(score=99) played Q♠
-counting: [9♢, Q♠] 19
-random(score=103) played 8♡
-counting: [9♢, Q♠, 8♡] 27
->>> tree(score=99) [10♠] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [9♢, Q♠, 8♡] 27
->>> I have no cards random(score=103)
-"Go!" has already been said, so starting a new count at 0
-pone has no cards
-counting: [] 0
->>> I have no cards random(score=103)
-that"s a "go", switching turns
-counting: [] 0
-tree(score=99) played 10♠
-counting: [10♠] 10
->>> I have no cards random(score=103)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone random(score=105) [2♠, K♠, 9♢, 8♡] 2
-dealer tree(score=101) [10♢, 2♣, Q♠, 10♠] 2
-crib tree(score=105) [9♠, 3♣, 3♠, Q♡] 4
-Turn card 9♢
-Counting starts with tree(score=105)
-counting: [] 0
-tree(score=105) played 10♢
-counting: [10♢] 10
-random(score=105) played 3♣
-counting: [10♢, 3♣] 13
-tree(score=105) played 6♢
-counting: [10♢, 3♣, 6♢] 19
-random(score=105) played 5♠
-counting: [10♢, 3♣, 6♢, 5♠] 24
-tree(score=105) played 4♡
-counting: [10♢, 3♣, 6♢, 5♠, 4♡] 28
->>> random(score=105) [Q♢, Q♣] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [10♢, 3♣, 6♢, 5♠, 4♡] 28
->>> tree(score=105) [4♠] I have to say 'go' on that one
-"Go!" has already been said, so starting a new count at 0
-counting: [] 0
-tree(score=105) played 4♠
-counting: [4♠] 4
-random(score=105) played Q♣
-counting: [4♠, Q♣] 14
->>> I have no cards tree(score=105)
-that"s a "go", switching turns
-counting: [4♠, Q♣] 14
-random(score=105) played Q♢
-counting: [4♠, Q♣, Q♢] 24
->>> I have no cards tree(score=105)
-"Go!" has already been said, so starting a new count at 0
-Counting hands
-pone tree(score=109) [10♢, 6♢, 4♡, 4♠] 4
-dealer random(score=111) [3♣, 5♠, Q♣, Q♢] 6
-crib random(score=115) [10♡, 6♠, A♠, 4♣] 4
-Turn card 7♠
-Counting starts with random(score=115)
-counting: [] 0
-random(score=115) played 5♡
+tree(score=102) played 5♡
 counting: [5♡] 5
-tree(score=109) played 3♠
-counting: [5♡, 3♠] 8
-random(score=115) played 2♠
-counting: [5♡, 3♠, 2♠] 10
-tree(score=109) played 2♡
-counting: [5♡, 3♠, 2♠, 2♡] 12
-random(score=115) played 8♣
-counting: [5♡, 3♠, 2♠, 2♡, 8♣] 20
-tree(score=109) played 4♠
-counting: [5♡, 3♠, 2♠, 2♡, 8♣, 4♠] 24
->>> random(score=115) [10♠] I have to say 'go' on that one
-that"s a "go", switching turns
-counting: [5♡, 3♠, 2♠, 2♡, 8♣, 4♠] 24
-tree(score=109) played 4♣
-counting: [5♡, 3♠, 2♠, 2♡, 8♣, 4♠, 4♣] 28
->>> random(score=115) [10♠] I have to say 'go' on that one
+>>> I have no cards random(score=107)
 "Go!" has already been said, so starting a new count at 0
-dealer has no cards
+pone has no cards
 counting: [] 0
-random(score=115) played 10♠
-counting: [10♠] 10
->>> I have no cards tree(score=109)
+>>> I have no cards random(score=107)
 that"s a "go", switching turns
-counting: [10♠] 10
->>> I have no cards random(score=115)
+counting: [] 0
+tree(score=102) played Q♠
+counting: [Q♠] 10
+>>> I have no cards random(score=107)
 "Go!" has already been said, so starting a new count at 0
 Counting hands
+pone random(score=113) [A♢, 6♡, 8♢, 2♠] 6
+dealer tree(score=106) [2♣, K♡, 5♡, Q♠] 4
+crib tree(score=110) [10♠, 5♢, 4♠, 8♣] 4
+Turn card 8♣
+Counting starts with tree(score=110)
+counting: [] 0
+tree(score=110) played A♠
+counting: [A♠] 1
+random(score=113) played 4♠
+counting: [A♠, 4♠] 5
+tree(score=110) played 10♡
+counting: [A♠, 4♠, 10♡] 15
+random(score=113) played Q♣
+counting: [A♠, 4♠, 10♡, Q♣] 25
+tree(score=110) played 5♡
+counting: [A♠, 4♠, 10♡, Q♣, 5♡] 30
+>>> random(score=113) [10♠, 5♠] I have to say 'go' on that one
+that"s a "go", switching turns
+counting: [A♠, 4♠, 10♡, Q♣, 5♡] 30
+>>> tree(score=110) [9♢] I have to say 'go' on that one
+"Go!" has already been said, so starting a new count at 0
+counting: [] 0
+tree(score=110) played 9♢
+counting: [9♢] 9
+random(score=113) played 5♠
+counting: [9♢, 5♠] 14
+>>> I have no cards tree(score=110)
+that"s a "go", switching turns
+counting: [9♢, 5♠] 14
+random(score=113) played 10♠
+counting: [9♢, 5♠, 10♠] 24
+>>> I have no cards tree(score=110)
+"Go!" has already been said, so starting a new count at 0
+Counting hands
+pone tree(score=117) [A♠, 10♡, 5♡, 9♢] 7
+dealer random(score=117) [4♠, Q♣, 5♠, 10♠] 4
