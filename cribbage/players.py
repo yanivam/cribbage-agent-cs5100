@@ -131,7 +131,6 @@ class RandomPlayer(Player):
 
 
     def ask_for_discards(self):
-        # and isn't needed here 
         return self.hand[0:2]
 
 
@@ -182,8 +181,8 @@ class GreedyAgentPlayer(Player):
     def ask_for_discards(self):
         """
         For each possible discard, score and select
-        highest scoring move. Note: this will give opponents 
-        excellent cribs, needs a flag for minimizing 
+        highest scoring move. It will discard cards
+        that create the least value.
         """
 
         print("cribbage: {} is choosing discards".format(self))
