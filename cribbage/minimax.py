@@ -1,7 +1,7 @@
 from copy import deepcopy
 from .score import scorePegging, peg_val
 from .card import Deck
-
+import numpy as np
 #build a minimax tree and returns the best move
 #tree with designated depth, currently 3 (predicitng one move from opponent)
 class minimaxTree:
@@ -46,7 +46,6 @@ class minimaxTree:
             self.utility = 0
             self.card = card
             self.probability = probability
-            self.utility = 0
 
         def debug(self):
             print("Debugging Info for Chance Node:")
@@ -141,13 +140,17 @@ class minimaxTree:
 
         # Go through all prob nodes and add regular nodes for opponent
         for n in self.root.getChildren(): #cnode, dealer node
+            expected_utility = []
             for m in n.getChildren(): #chanceNodes
                 testHand = deepcopy(hand)
                 testHand.remove(n.getCard())
                 testSequence = deepcopy(sequence)
                 testSequence.append(n.getCard())
-                newNode = self.node(m, -1*(self.scorePegging(testHand, testSequence, current_sum + n.getSumFromPlay(), m.getCard())))
+                utility = (self.scorePegging(testHand, testSequence, current_sum + n.getSumFromPlay(), m.getCard()))
+                newNode = self.node(m, utility)
                 m.addChild(newNode)
+                expected_utility.append(utility) 
+            n.utility = np.mean(expected_utility)
 
         
 
@@ -163,16 +166,17 @@ class minimaxTree:
         #print(self.root.getChildren())
         lowestNode = self.root.getChildren()[0]
 
-        lowestNodeScore = -1000
+        lowestNodeScore = float('-inf')
         for cnode in self.root.getChildren():
             # Opponant will play whatever card is most negative utility for agent
             # Find min node
-            currMin = 1000
-            for dnode in cnode.getChildren():
-                if dnode.getChildren()[0].getUtility() < currMin:
-                    currMin = dnode.getChildren()[0].getUtility()
-            if (cnode.getUtility() + currMin) > lowestNodeScore:
+            # currMin = 1000
+            # for dnode in cnode.getChildren():
+            #     if dnode.getChildren()[0].getUtility() < currMin:
+            #         currMin = dnode.getChildren()[0].getUtility()
+            if (cnode.getUtility() ) > lowestNodeScore: #+ currMin
                 lowestNode = cnode
+                lowestNodeScore = cnode.getUtility()
 
         return lowestNode.getCard()
 
