@@ -233,7 +233,6 @@ class RLAgent(Player):
 
             if card in self.hand and card not in self.discarded:
                 self.discarded.append(card)
-                print(card)
                 return card
 
     def ask_for_discards(self, dealer=0):
@@ -291,9 +290,12 @@ class GreedyAgentPlayer(Player):
 
     def ask_for_discards(self, dealer=0):
         """
-        For each possible discard, score and select
-        highest scoring move. Note: this will give opponents 
-        excellent cribs, needs a flag for minimizing 
+        For each possible discard, score and select highest scoring move.
+
+        This operates by enumerating every possible combination of turn card and crib and using them to compute an
+        expected crib value (if non-dealer) or hand + crib value (if dealer) for each possible discard. If the agent is
+        the dealer, it chooses the discard with the highest expected hand + crib score. If it is not the dealer, the
+        agent chooses the discard that minimizes the crib value.
         """
 
         print("cribbage: {} is choosing discards".format(self))
@@ -303,15 +305,29 @@ class GreedyAgentPlayer(Player):
         discards = []
         mean_scores = []
         for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
-            inner_scores = []
+            inner_scores = []  # Keep track of the Expected score for each discard
+            hand_after_discard = [c for c in self.hand if c not in discard]  # The cards that remain after discarding
             for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
-                inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
+                if not dealer:
+                    # Our goal is to minimize the crib, so we only compute crib scores:
+                    inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
+                else:
+                    # Score of the cards remaining in your hand:
+                    score_of_remaining_cards = score_hand(hand_after_discard, pot[-1])
+                    # Update inner scores with the sum of the score for remaining cards plus the expected score
+                    # of the crib (because the dealer takes both the crib and its hand):
+                    inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]) + score_of_remaining_cards)
                 bar.update(1)
             inner_scores = np.array(inner_scores)
             discards.append(discard)
             mean_scores.append(inner_scores.mean())
 
-        return list(discards[np.argmin(mean_scores)])
+        if dealer:
+            # If we're the dealer, we want to maximize our expected score:
+            return list(discards[np.argmax(mean_scores)])
+        else:
+            # Otherwise, minimize the expected crib score:
+            return list(discards[np.argmin(mean_scores)])
 
 
     def ask_for_play(self, previous_plays, turn=0):
