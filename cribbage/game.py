@@ -49,8 +49,8 @@ class Hand:
     def discards(self):
         """Get discards from both players and add them to crib"""
 
-        d1 = self.dealer.discards()
-        d2 = self.pone.discards()
+        d1 = self.dealer.discards(dealer=1)
+        d2 = self.pone.discards(dealer=0)
         self.dealer.crib = d1 + d2
 
 
@@ -75,8 +75,10 @@ class Hand:
 
             # player whose turn it is plays 
             player = self.turn_map[turn]
-            my_play = player.play(count, plays) # can be `"Go!"` or a card object 
-            
+            my_play = player.play(count, plays, turn)  # can be `"Go!"` or a card object
+            pair = False
+            pair_royal = False
+            double_pair = False
             if isinstance(my_play, str):
                 if go_has_been_said:
                     #print('"Go!" has already been said, so starting a new count at 0')
@@ -93,10 +95,31 @@ class Hand:
                 # score the play 
                 # needs a rework of `score_hand` to accept < 4 cards and no turn card 
                 if count == 31:
-                    #print('counted to 31, point for', player)
-                    player.peg(1)
+                    player.peg(2)
+                    print('counted to 31, 2 points for', player)
                     done = True
                     count = 0
+                if count == 15:
+                    player.peg(2)
+                    print('counted to 15, 2 points for', player)
+                if len(plays) > 1:
+                    if plays[-1].rank == plays[-2].rank:  # Pair
+                        pair = True
+                if len(plays) > 2 and pair:  # Check for pair royal
+                    if plays[-2].rank == plays[-3].rank:  # Pair royal
+                        pair_royal = True
+                if len(plays) > 3 and pair_royal:
+                    if plays[-3].rank == plays[-4].rank:
+                        double_pair = True
+                if double_pair:
+                    player.peg(12)
+                    print('Double pair-royal, 12 points for', player)
+                elif pair_royal:
+                    player.peg(6)
+                    print('Pair royal, 6 points for', player)
+                elif pair:
+                    player.peg(2)
+                    print('Pair, 2 points for', player)
 
             turn = turn ^ 1 
  

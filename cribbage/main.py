@@ -7,6 +7,8 @@ from .players import (
     HumanPlayer,
     NondeterministicAIPlayer,
     GreedyAgentPlayer,
+    RLAgent,
+    RandomPlayer,
     HeuristicAgentPlayer
 )
 import multiprocessing

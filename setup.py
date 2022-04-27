@@ -23,6 +23,8 @@ setup(
     ],
     keywords='cribbage cards card-games machine-learning ai',
     packages = ['cribbage'] ,
+    package_data = {'cribbage': ['simple_model.pth', 'simple_pegging_model.pth']},
+    include_package_data=True,
     install_requires=['numpy'],
     entry_points={
         'console_scripts': [
