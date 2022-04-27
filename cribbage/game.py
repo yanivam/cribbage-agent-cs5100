@@ -75,7 +75,7 @@ class Hand:
 
             # player whose turn it is plays 
             player = self.turn_map[turn]
-            my_play = player.play(count, plays, turn) # can be `"Go!"` or a card object
+            my_play = player.play(count, plays, turn)  # can be `"Go!"` or a card object
             pair = False
             pair_royal = False
             double_pair = False
@@ -95,13 +95,13 @@ class Hand:
                 # score the play 
                 # needs a rework of `score_hand` to accept < 4 cards and no turn card 
                 if count == 31:
-                    print('counted to 31, 2 points for', player)
                     player.peg(2)
+                    print('counted to 31, 2 points for', player)
                     done = True
                     count = 0
                 if count == 15:
-                    print('counted to 15, 2 points for', player)
                     player.peg(2)
+                    print('counted to 15, 2 points for', player)
                 if len(plays) > 1:
                     if plays[-1].rank == plays[-2].rank:  # Pair
                         pair = True
@@ -112,15 +112,15 @@ class Hand:
                     if plays[-3].rank == plays[-4].rank:
                         double_pair = True
                 if double_pair:
-                    print('Double pair-royal, 12 points for', player)
                     player.peg(12)
+                    print('Double pair-royal, 12 points for', player)
                 elif pair_royal:
-                    print('Pair royal, 6 points for', player)
                     player.peg(6)
+                    print('Pair royal, 6 points for', player)
                 elif pair:
+                    player.peg(2)
                     print('Pair, 2 points for', player)
 
-        
             turn = turn ^ 1 
  
 

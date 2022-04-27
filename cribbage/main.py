@@ -6,6 +6,8 @@ from .players import (
     HumanPlayer,
     NondeterministicAIPlayer,
     GreedyAgentPlayer,
+    RLAgent,
+    RandomPlayer,
 )
 
 
@@ -30,8 +32,8 @@ def main():
     player_1 = player_choices[args.player1](name=args.name1 or 'Player 1')
     player_2 = player_choices[args.player2](name=args.name2 or 'Player 2')
     '''
-    player_1 = GreedyAgentPlayer('Player 1')
-    player_2 = NondeterministicAIPlayer('Player 2')
+    player_1 = RandomPlayer('Player 1')
+    player_2 = RLAgent('Player 2')
 
     # Play game
     game = Game(player_1, player_2)

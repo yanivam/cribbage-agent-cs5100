@@ -95,7 +95,9 @@ def score_count(plays):
     if count == 15 or count == 31:
         score += 2
     if plays[-1].rank == plays[-2].rank:
-        score += 2
-    if len(plays) > 2 and plays[-2].rank == plays[-3].rank:
-        score += 4
+        score += 2  # Paor
+        if len(plays) > 2 and plays[-2].rank == plays[-3].rank:
+            score += 4  # Pair royal
+            if len(plays) > 3 and plays[-3].rank == plays[-4].rank:
+                score += 6  # double Pair Royal
     return score

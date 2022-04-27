@@ -1,21 +1,19 @@
-import random
 from itertools import combinations
-from random import choice, shuffle 
+from random import shuffle
+
+import os
+import sys
 
 import numpy as np
+import pkg_resources
 import torch
 from tqdm import tqdm
-from collections import deque
 
 from .score import score_hand, score_count
-from .card import Deck
+from .card import Deck, Card
 
-# Hyperparameters for RL agent:
-from QModel import LinearQNet, QTrainer
-MAX_MEMORY = 100_000
-BATCH_SIZE = 1000
-LR = 0.001
-
+# Model for RL agent:
+from .QModel import LinearQNet
 
 class WinGame(Exception):
     pass
@@ -37,36 +35,30 @@ class Player:
 
     # Discards
 
-    def ask_for_discards(dealer=0):
+    def ask_for_discards(self, dealer=0):
         """Should return two cards from the player"""
         raise Exception("You need to implement `ask_for_discards` yourself")
-
 
     def update_after_discards(self, discards):
         for discard in discards:
             self.hand.remove(discard)
 
-
     def discards(self, dealer=0):
-        cards = self.ask_for_discards(dealer)
+        cards = self.ask_for_discards(dealer=dealer)
         self.update_after_discards(cards)
         return cards
 
-
     # Counting plays
-
     def ask_for_play(self, previous_plays, turn=0):
         """Should return a single card from the player
 
         Private method"""
         raise Exception("You need to implement `ask_for_play` yourself")
 
-
     def update_after_play(self, play):
         """Private method"""
         self.table.append(play)
         self.hand.remove(play)
-
 
     def play(self, count, previous_plays, turn=0):
         """Public method"""
@@ -82,16 +74,13 @@ class Player:
             if sum((pp.value for pp in previous_plays)) + card.value < 32:
                 self.update_after_play(card)
                 return card
-            else: 
+            else:
                 # `self.ask_for_play` has returned a card that would put the 
                 # score above 31 but the player's hand contains at least one
                 # card that could be legally played (you're not allowed to say
                 # "go" here if you can legally play). How the code knows that 
                 # the player has a legal move is beyond me
                 print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
-
-    def play_step(self, count, previous_plays, turn):
-        pass
 
     # Scoring
     def peg(self, points):
@@ -104,14 +93,14 @@ class Player:
         """Count the hand (which should be on the table)"""
         score = score_hand(self.table, turn_card)
         self.peg(score)
-        return score 
+        return score
 
 
     def count_crib(self, turn_card):
         """Count crib, with side effect of pegging the score"""
         score = score_hand(self.crib, turn_card)
         self.peg(score)
-        return score 
+        return score
 
 
     def win_game(self):
@@ -153,7 +142,7 @@ class HumanPlayer(Player):
 
     def ask_for_play(self, previous_plays, turn=0):
         """Ask a human for a card during counting"""
-        
+
         d = dict(enumerate(self.hand, 1))
         print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
 
@@ -186,29 +175,74 @@ class RLAgent(Player):
     A player that uses a RL trained model to select cards to play. Other
     """
     # Init should load the model and set it to eval mode
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name=None):
+        super().__init__(name)
+        self.playable_cards = []
         self.discarded = []  # Will represent the discards that the player *knows* it discarded to crib
-        self.n_games = 0
-        self.epsilon = 0
-        self.gamma = 0.9
-        self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = LinearQNet(209, 40, 6)
-        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+        self.discard_model = LinearQNet(209, 60, 52)
+        self.pegging_model = LinearQNet(209, 60, 52)
+        discard_path = pkg_resources.resource_filename('cribbage', 'simple_model.pth')
+        peg_path = pkg_resources.resource_filename('cribbage', 'simple_pegging_model.pth')
+        self.discard_model.load_state_dict(torch.load(discard_path))
+        self.pegging_model.load_state_dict(torch.load(peg_path))
 
-    def ask_for_play(self, previous_plays, turn=0):
-        # Convert hand and previous_plays into an input to the NN
-        # pass this input through the model
-        # convert model output into card choice
-        pass
+    def play(self, count, previous_plays, turn=0):
+        '''
+        Overrides parent play method to pass the current count along to self.ask_for_play()
+        '''
+        if not self.hand:
+            print('>>> I have no cards', self)
+            return "No cards!"
+        elif all(count + card.value > 31 for card in self.hand):
+            print(">>>", self, self.hand, "I have to say 'go' on that one")
+            return "Go!"
 
-    def ask_for_discards(dealer=0):
-        # Convert hand and previous plays into an input to th NN
-        # pass this input through the model
-        # convert model output into card choice
-        pass
+        # Only ask for a play if we have cards we can actually play
+        card = self.ask_for_play(count, previous_plays, turn)
+        self.update_after_play(card)
+        return card
 
-    def _get_state(self, previous_plays, dealer):
+
+    def ask_for_play(self, count, previous_plays, dealer=0):
+        # Limit ourselves to cards we can actually play:
+        self.playable_cards = [c for c in self.hand if c.value + count <= 31]
+        state = torch.Tensor(self.get_state(self.hand, previous_plays, dealer))
+
+        output = self.pegging_model(state)
+
+        vals, indices = output.sort(descending=True)
+
+        for idx in indices:
+            card = Card(idx)
+            if card in self.hand and card in self.playable_cards:
+                return card
+
+
+    def _discard(self, dealer):
+        '''
+        Private helper method for performing a single discard
+        '''
+        # Get state appropriate for NN
+        state = torch.Tensor(self.get_state(self.hand, [], dealer))
+
+        # Pass input through discard model:
+        output = self.discard_model(state)
+        vals, indices = output.sort(descending=True)
+        for idx in indices:
+            card = Card(idx)
+
+            if card in self.hand and card not in self.discarded:
+                self.discarded.append(card)
+                print(card)
+                return card
+
+    def ask_for_discards(self, dealer=0):
+        self.discarded = []  # Reset the discarded cards
+        card1 = self._discard(dealer)
+        card2 = self._discard(dealer)
+        return [card1, card2]
+
+    def get_state(self, in_hand, previous_plays, dealer):
         '''
         Get the state of play as a one-hot encoded np.array.
 
@@ -223,7 +257,7 @@ class RLAgent(Player):
             state[0] = 1
 
         # Set state of cards in hand:
-        for card in self.hand:
+        for card in in_hand:
             idx = self._get_card_index(card)
             idx = idx + 1  # Add one as we've already set the dealer state
             state[idx] = 1
@@ -236,37 +270,11 @@ class RLAgent(Player):
 
         # Set the state of play:
         for i, card in enumerate(previous_plays):
-            card_idx = self._get_card_index(card)
+            card_idx = card.rank
             idx = card_idx + (i * 13) + 52 + 52 + 1
             state[idx] = 1
 
         return state
-
-    def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
-
-    def train_long_memory(self):
-        if len(self.memory) > BATCH_SIZE:
-            mini_sample = random.sample(self.memory, BATCH_SIZE)
-        else:
-            mini_sample = self.memory
-
-        states, actions, rewards, next_states, dones = zip(*mini_sample)
-        self.trainer.train_step(states, actions, rewards, next_states, dones)
-
-    def train_short_memory(self, state, action, reward, next_state, done):
-        self.trainer.train_step(state, action, reward, next_state, done)
-
-    def get_action(self, state):
-        self.epsilon = 80 - self.n_games
-        final_move = 0
-        if random.randint(0, 200) < self.epsilon:
-            final_move = random.randint(0, 5)
-        else:
-            state0 = torch.Tensor(state)
-            prediction = self.model(state0)
-            final_move = torch.argmax(prediction).item()
-        return final_move
 
     def _get_card_index(self, card):
         suit = card.suit

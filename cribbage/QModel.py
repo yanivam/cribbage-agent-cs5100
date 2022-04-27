@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os  # For saving model
+import numpy as np
 
 class LinearQNet(nn.Module):
     '''
@@ -35,6 +36,8 @@ class QTrainer:
         self.criterion = nn.MSELoss()
 
     def train_step(self, state, action, reward, next_state, done):
+        state = np.array(state)
+        next_state = np.array(state)
         state = torch.tensor(state, dtype=torch.float)
         next_state = torch.tensor(next_state, dtype=torch.float)
         action = torch.tensor(action, dtype=torch.long)
@@ -61,12 +64,12 @@ class QTrainer:
                 Q_new = reward[idx] + self.gamma * torch.max(self.model(next_state[idx]))
 
             # update reward
-            target[idx][torch.argmax(action[idx]).item] = Q_new
+            target[idx][action[idx].item()] = Q_new
 
         # Then, adjust the model so as to minimize the difference between the Q-estimate
         # computed above (Q_new) and the predicted reward:
         self.optimizer.zero_grad()
         loss = self.criterion(target, pred)
-        loss.backard()
+        loss.backward()
 
         self.optimizer.step()
