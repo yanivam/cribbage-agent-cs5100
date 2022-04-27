@@ -26,8 +26,8 @@ def playCribbageOnce(i):
         return win_game
 
 def play1000CribbageGames():
-    pool = multiprocessing.Pool(4)
-    winners = pool.map(playCribbageOnce, range(1000))
+    pool = multiprocessing.Pool(10)
+    winners = pool.map(playCribbageOnce, range(11))
     pool.close()
     pool.join()
     return winners
@@ -50,10 +50,17 @@ def main():
     '''
 
     # Play game
+    print("", multiprocessing.cpu_count() - 1)
     start_time = time.time()
     winners = play1000CribbageGames()
     duration = time.time() - start_time
     print('Played 1000 games in ' + str(duration) + ' seconds')
 
-    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 1000
+    with open("test.txt", 'w', encoding='utf-8') as f:
+        p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 11
+        for winner in winners:
+            if 'Game was won by Player 1' in str(winner):
+                f.write(str(1))
+            else:
+                f.write(str(0))
     print('Percentage won by greedy agent: ' + str(p_sum))
