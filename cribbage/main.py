@@ -16,7 +16,7 @@ import time
 
 def playCribbageOnce(i):
     print(f"start process {i}")
-    randomPlayerTurn = [HeuristicAgentPlayer('Player 1'), NondeterministicAIPlayer('Player 2')]
+    randomPlayerTurn = [HeuristicAgentPlayer('Player 1'), GreedyAgentPlayer('Player 2')]
     random.shuffle(randomPlayerTurn)
     game = Game(randomPlayerTurn[0], randomPlayerTurn[1])
     try:
@@ -26,8 +26,8 @@ def playCribbageOnce(i):
         return win_game
 
 def play1000CribbageGames():
-    pool = multiprocessing.Pool(4)
-    winners = pool.map(playCribbageOnce, range(1000))
+    pool = multiprocessing.Pool(5)
+    winners = pool.map(playCribbageOnce, range(10))
     pool.close()
     pool.join()
     return winners
