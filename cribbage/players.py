@@ -7,10 +7,14 @@ import sys
 import numpy as np
 import pkg_resources
 import torch
-from tqdm import tqdm
 
 from .score import score_hand, score_count
 from .card import Deck, Card
+
+
+from .score import score_hand, score_count, score_hand_heuristic
+from .card import Deck
+
 
 # Model for RL agent:
 from .QModel import LinearQNet
@@ -63,10 +67,10 @@ class Player:
     def play(self, count, previous_plays, turn=0):
         """Public method"""
         if not self.hand:
-            print('>>> I have no cards', self)
+            #print('>>> I have no cards', self)
             return "No cards!"
         elif all(count + card.value > 31 for card in self.hand):
-            print(">>>", self, self.hand, "I have to say 'go' on that one")
+            #print(">>>", self, self.hand, "I have to say 'go' on that one")
             return "Go!"
         while True:
             card = self.ask_for_play(previous_plays, turn)  # subclasses (that is, actual players) must implement this
@@ -74,13 +78,13 @@ class Player:
             if sum((pp.value for pp in previous_plays)) + card.value < 32:
                 self.update_after_play(card)
                 return card
-            else:
+            #else:
                 # `self.ask_for_play` has returned a card that would put the 
                 # score above 31 but the player's hand contains at least one
                 # card that could be legally played (you're not allowed to say
                 # "go" here if you can legally play). How the code knows that 
                 # the player has a legal move is beyond me
-                print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
+                #print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
 
     # Scoring
     def peg(self, points):
@@ -144,7 +148,7 @@ class HumanPlayer(Player):
         """Ask a human for a card during counting"""
 
         d = dict(enumerate(self.hand, 1))
-        print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
+        #print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
 
         while True:
             inp = input(">>> Card number to play: ") or "1"
@@ -158,15 +162,15 @@ class HumanPlayer(Player):
 
         d = dict(enumerate(self.sorted_hand, 1))
 
-        print('>>> Please nominate two cards to discard to the crib')
-        print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
+        #print('>>> Please nominate two cards to discard to the crib')
+        #print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
         discard_prompt = ">>> "
 
         while True:
             inp = input(discard_prompt) or "12"
             cards = [d[int(i)] for i in inp.replace(" ", "").replace(",", "")]
             if len(cards) == 2:
-                print(f">>> Discarded {cards[0]} {cards[1]}")
+                #print(f">>> Discarded {cards[0]} {cards[1]}")
                 return cards
 
 
@@ -298,10 +302,9 @@ class GreedyAgentPlayer(Player):
         agent chooses the discard that minimizes the crib value.
         """
 
-        print("cribbage: {} is choosing discards".format(self))
+        #print("cribbage: {} is choosing discards".format(self))
         deck = Deck().draw(52)
         potential_cards = [n for n in deck if n not in self.hand]
-        bar = tqdm(total=226994)
         discards = []
         mean_scores = []
         for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
@@ -317,7 +320,6 @@ class GreedyAgentPlayer(Player):
                     # Update inner scores with the sum of the score for remaining cards plus the expected score
                     # of the crib (because the dealer takes both the crib and its hand):
                     inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]) + score_of_remaining_cards)
-                bar.update(1)
             inner_scores = np.array(inner_scores)
             discards.append(discard)
             mean_scores.append(inner_scores.mean())
@@ -345,32 +347,78 @@ class GreedyAgentPlayer(Player):
 
         return plays[max_index]
 
+class HeuristicAgentPlayer(Player):
+    """
+    "Expert systems" style AI player that systematically
+    enumerates possible moves and chooses the move that
+    maximizes its score after the move
+    """
 
-# class TrainedAIPlayer(Player):
-#     """
-#     A player that makes choices based on previous games
-#     """
+    def expertStrategyHeuristic(self, discards, scores):
+        new_discards = discards.copy()
+        new_scores = scores.copy()
+        for discard in discards:
+            if(sum(list(map(lambda d: d.value, discard))) == 5):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif("Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif("J" in list(map(lambda d: d.rank_str, discard))):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif (abs(discard[0].value - discard[1].value) == 2):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+            elif (discard[0].suit == discard[1].suit):
+                remIdx = new_discards.index(discard)
+                new_discards.pop(remIdx)
+                new_scores.pop(remIdx)
+        return new_discards, new_scores
+    
+    def ask_for_discards(self):
+        """
+        For each possible discard, score and select
+        highest scoring move. Note: this will give opponents 
+        excellent cribs, needs a flag for minimizing 
+        """
 
-#     def __init__(self, name=""):
-#         # override this constructor becasue I want to
-#         # load the ML model in when we init AIPlayer instance
-#         self.name = name
-#         self.hand = []
-#         self.score = 0
-#         self.debug = False
-#         self.model = load_trained_model()  # trained model we can ask directly for plays
+        #print("cribbage: {} is choosing discards".format(self))
+        deck = Deck().draw(52)
+        discards = []
+        scores = []
+        for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+            discards.append(discard)
+            scores.append(0)
+        discards, scores = self.expertStrategyHeuristic(discards, scores)
+        for discardIdx in range(len(discards)):
+            scores[discardIdx] = score_hand_heuristic([x for x in self.hand if x not in discards[discardIdx]])
+        if(len(scores) == 0):
+            for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+                discards.append(discard)
+                scores.append(0)
+            for discardIdx in range(len(discards)):
+                scores[discardIdx] = score_hand_heuristic([x for x in self.hand if x not in discards[discardIdx]])
+        return list(discards[np.argmin(scores)])
 
-#     def ask_for_input(self, play_vector):
-#         card = self.model.ask_for_pegging_play(play_vector, self.in_hand)
-#         card.ontable = True
-#         return card
 
-#     def ask_for_discards(self):
-#         cards = self.model.ask_model_for_discard(
-#             self.hand
-#         )  # note: returns card objects
-#         self.hand = [n for n in self.hand if n not in cards]
-#         return cards
+    def ask_for_play(self, previous_plays):
+        """
+        Calculate points for each possible play in your hand
+        and choose the one that maximizes the points
+        """
 
+        scores = []
+        plays = []
+        for card in self.hand:
+            plays.append(card)
+            scores.append(score_count(previous_plays + [card]))
+        max_index = np.argmax(scores)
+
+        return plays[max_index]
 
 NondeterministicAIPlayer = RandomPlayer
