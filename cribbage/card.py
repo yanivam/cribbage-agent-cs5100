@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from random import shuffle
 
 
@@ -60,9 +58,6 @@ class Card:
 
     def __eq__(self, other):
         return self.index == other.index
-
-    def getRank(self):
-        return self.rank
 
 
 class Deck:
