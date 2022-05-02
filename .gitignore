@@ -7,3 +7,6 @@ build
 dist
 cribbage.egg-info
 .ipynb_checkpoints
+.idea
+get-pip.py
+__pycache__

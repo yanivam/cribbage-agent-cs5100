@@ -87,14 +87,76 @@ def score_count(plays):
     if not plays or len(plays) < 2:
         return score
 
-    count = sum(plays)
+    count = sum(list(map(lambda x: x.value,plays)))
+
+    if count >= 32:
+       return -1
+
     if count == 15 or count == 31:
         score += 2
-
     if plays[-1].rank == plays[-2].rank:
-        score += 2
-    if len(plays) > 2 and plays[-2].rank == plays[-3].rank:
-        score += 4
-        # hack? or does that actually make sense?
-
+        score += 2  # Paor
+        if len(plays) > 2 and plays[-2].rank == plays[-3].rank:
+            score += 4  # Pair royal
+            if len(plays) > 3 and plays[-3].rank == plays[-4].rank:
+                score += 6  # double Pair Royal
     return score
+
+def score_hand_heuristic(hand, is_crib=False):
+    """Score a valid cribbage hand
+    
+    Parameters
+    ----------
+    hand: list of cribbage.Card
+        Exactly four cards forming a hand 
+        
+    turn_card: cribbage.Card
+        The turn card 
+    """
+
+    if len(hand) != 4:
+        raise ValueError(
+            "To score a hand, it must have 4 cards, not {}".format(len(hand))
+        )
+
+    points = 0
+    points += score_fifteens_heuristic(hand)
+    points += score_sets_heuristic(hand)
+    points += score_runs_heuristic(hand)
+
+    return points
+
+
+def score_fifteens_heuristic(hand):
+    points = 0
+    for vector_length in [2, 3, 4, 5]:
+        for vector in combinations(hand, vector_length):
+            if sum(x.value for x in vector) == 15:
+                points += 2
+
+    return points
+
+
+def score_sets_heuristic(hand):
+    points = 0
+    # pairs (not necessary to account for more than pairs for ==)
+    for i, j in combinations(hand, 2):
+        if i.rank == j.rank:
+            points += 2
+
+    return points
+
+
+def score_runs_heuristic(hand):
+    points = 0
+    for vector_len in [5, 4, 3]:
+        for vec in combinations(hand, vector_len):
+            vals = [card.run_val for card in vec]
+            run = [n + min(vals) for n in range(vector_len)]
+            if sorted(vals) == run:
+                points += vector_len
+                break
+        if points > 0:
+            break
+    
+    return points
