@@ -3,12 +3,9 @@ from random import choice, shuffle
 
 import numpy as np
 from tqdm import tqdm
-from copy import deepcopy,copy
 
 from .score import score_hand, score_count
 from .card import Deck
-from .minimax import minimaxTree
-
 
 
 class WinGame(Exception):
@@ -31,7 +28,7 @@ class Player:
 
     # Discards
 
-    def ask_for_discards(self):
+    def ask_for_discards():
         """Should return two cards from the player"""
         raise Exception("You need to implement `ask_for_discards` yourself")
 
@@ -223,7 +220,7 @@ class EnumerativeAIPlayer(Player):
         plays = []
         for card in self.hand:
             plays.append(card)
-            scores.append(score_count(plays + [card]))
+            scores.append(score_count(play_vector + [card]))
         max_index = np.argmax(scores)
 
         return plays[max_index]
@@ -254,73 +251,6 @@ class EnumerativeAIPlayer(Player):
 #         )  # note: returns card objects
 #         self.hand = [n for n in self.hand if n not in cards]
 #         return cards
-
-class TreeAIPlayer(Player):
-
-    def ask_for_discards(self, my_crib=True):
-        """
-        For each possible discard, score and select
-        highest scoring move. 
-        """
-
-        print("cribbage: {} is choosing discards".format(self))
-        deck = Deck().draw(52)
-        potential_cards = [n for n in deck if n not in self.hand]
-        bar = tqdm(total=226994)
-        discards = []
-        mean_scores = []
-        for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
-            inner_scores = []
-            for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
-                inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
-                bar.update(1)
-            inner_scores = np.array(inner_scores)
-            discards.append(discard)
-            mean_scores.append(inner_scores.mean())
-
-        # return either the best (if my crib) or the worst (if not)
-        if my_crib:
-            selected = np.argmax(mean_scores)
-        else:
-            selected = np.argmin(mean_scores)
-
-        return list(discards[selected])
-        # return self.hand[0:2]
-
-
-
-    def ask_for_play(self, hand, sequence, current_sum):
-        """
-        Generate a tree that are used to maximize the expected utility and to recommend next play
-        hand: current hand
-        sequence: previous cards in this play
-        current_sum: running total of cards in this play
-        """
-        tree = minimaxTree(hand, sequence, current_sum, 3)
-        return tree.recommendCard(0)
-
-    def play(self, count, previous_plays):
-        """Public method"""
-        if not self.hand:
-            print('>>> I have no cards', self)
-            return "No cards!"
-        elif all(count + card.value > 31 for card in self.hand):
-            print(">>>", self, self.hand, "I have to say 'go' on that one")
-            return "Go!"
-        while True:
-            card = self.ask_for_play(self.hand, previous_plays,count)  # subclasses (that is, actual players) must implement this
-            #print("Nominated card", card)
-            if sum((pp.value for pp in previous_plays)) + card.value < 32:
-                self.update_after_play(card)
-                return card
-            else: 
-                # `self.ask_for_play` has returned a card that would put the 
-                # score above 31 but the player's hand contains at least one
-                # card that could be legally played (you're not allowed to say
-                # "go" here if you can legally play). How the code knows that 
-                # the player has a legal move is beyond me
-                print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
-
 
 
 NondeterministicAIPlayer = RandomPlayer

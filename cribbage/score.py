@@ -17,8 +17,7 @@ def score_hand(hand, turn_card, is_crib=False):
         raise ValueError(
             "To score a hand, it must have 4 cards, not {}".format(len(hand))
         )
-    hand = list(hand)
-    # print(type(hand))
+
     points = 0
     points += score_fifteens(hand, turn_card)
     points += score_sets(hand, turn_card)
@@ -99,7 +98,3 @@ def score_count(plays):
         # hack? or does that actually make sense?
 
     return score
-
-def peg_val(card):
-    return 10 if card.getRank() > 10 else card.getRank()
-
