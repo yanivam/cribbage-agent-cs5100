@@ -1,11 +1,16 @@
 from argparse import ArgumentParser
-
-from .game import Game
-from .players import (
+import sys
+import os
+# SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# # print(SCRIPT_DIR)
+# sys.path.append(os.path.dirname(SCRIPT_DIR))
+from cribbage.game import Game
+from cribbage.players import (
     WinGame,
     HumanPlayer,
     NondeterministicAIPlayer,
     EnumerativeAIPlayer,
+    TreeAIPlayer,
 )
 
 
@@ -16,6 +21,7 @@ def main():
         "human": HumanPlayer,
         "expert": EnumerativeAIPlayer,
         "random": NondeterministicAIPlayer,
+        "tree":TreeAIPlayer,
     }
 
     parser = ArgumentParser()
