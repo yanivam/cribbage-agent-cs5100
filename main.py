@@ -101,7 +101,7 @@ def playCribbageOnce(i):
 
 def play1000CribbageGames():
     pool = multiprocessing.Pool(4)
-    scores = pool.map(playCribbageOnce, range(10))
+    scores = pool.map(playCribbageOnce, range(1000))
     pool.close()
     pool.join()
     return scores
@@ -134,8 +134,8 @@ if __name__ == "__main__":
     print('Played 1000 games in ' + str(duration) + ' seconds')
 
 
-    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 10
-    print('Percentage won by Tree agent: ' + str(p_sum))
+    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 1000
+    print(f'Percentage won by Player 1: ' + str(p_sum))
 
 
     # print(scores)
