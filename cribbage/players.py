@@ -356,30 +356,49 @@ class HeuristicAgentPlayer(Player):
     maximizes its score after the move
     """
 
-    def expertStrategyHeuristic(self, discards, scores):
+    def expertStrategyHeuristic(self, discards, scores, dealer):
         new_discards = discards.copy()
         new_scores = scores.copy()
-        for discard in discards:
-            if(sum(list(map(lambda d: d.value, discard))) == 5):
-                remIdx = new_discards.index(discard)
-                new_discards.pop(remIdx)
-                new_scores.pop(remIdx)
-            elif("Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
-                remIdx = new_discards.index(discard)
-                new_discards.pop(remIdx)
-                new_scores.pop(remIdx)
-            elif("J" in list(map(lambda d: d.rank_str, discard))):
-                remIdx = new_discards.index(discard)
-                new_discards.pop(remIdx)
-                new_scores.pop(remIdx)
-            elif (abs(discard[0].value - discard[1].value) == 2):
-                remIdx = new_discards.index(discard)
-                new_discards.pop(remIdx)
-                new_scores.pop(remIdx)
-            elif (discard[0].suit == discard[1].suit):
-                remIdx = new_discards.index(discard)
-                new_discards.pop(remIdx)
-                new_scores.pop(remIdx)
+        if not dealer:
+            for discard in discards:
+                if(sum(list(map(lambda d: d.value, discard))) == 5):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                elif("J" in list(map(lambda d: d.rank_str, discard)) or "Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                elif (abs(discard[0].value - discard[1].value) == 2):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                elif (discard[0].suit == discard[1].suit):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+        else:
+            for discard in discards:
+                if(not sum(list(map(lambda d: d.value, discard))) == 5):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                    continue
+                if ("J" in list(map(lambda d: d.rank_str, discard)) or "Q" in list(map(lambda d: d.rank_str, discard)) or "3" in list(map(lambda d: d.rank_str, discard)) or "4" in list(map(lambda d: d.rank_str, discard)) or "7" in list(map(lambda d: d.rank_str, discard)) or "8" in list(map(lambda d: d.rank_str, discard))):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                    continue
+                if (abs(discard[0].value - discard[1].value) == 2):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                    continue
+                if (discard[0].suit == discard[1].suit):
+                    remIdx = new_discards.index(discard)
+                    new_discards.pop(remIdx)
+                    new_scores.pop(remIdx)
+                    continue
         return new_discards, new_scores
     
     def ask_for_discards(self, dealer=0):
@@ -396,7 +415,7 @@ class HeuristicAgentPlayer(Player):
         for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
             discards.append(discard)
             scores.append(0)
-        discards, scores = self.expertStrategyHeuristic(discards, scores)
+        discards, scores = self.expertStrategyHeuristic(discards, scores, dealer)
         for discardIdx in range(len(discards)):
             scores[discardIdx] = score_hand_heuristic([x for x in self.hand if x not in discards[discardIdx]])
         if(len(scores) == 0):
