@@ -15,6 +15,7 @@ from .card import Deck, Card
 from .score import score_hand, score_count, score_hand_heuristic
 from .card import Deck
 
+from .minimax import minimaxTree
 
 # Model for RL agent:
 from .QModel import LinearQNet
@@ -53,7 +54,7 @@ class Player:
         return cards
 
     # Counting plays
-    def ask_for_play(self, previous_plays, turn=0):
+    def ask_for_play(self,previous_plays, turn=0, count = 0):
         """Should return a single card from the player
 
         Private method"""
@@ -127,7 +128,7 @@ class RandomPlayer(Player):
     A player who plays randomly
     """
 
-    def ask_for_play(self, previous_plays, turn=0):
+    def ask_for_play(self, previous_plays, turn=0,count = 0):
         shuffle(self.hand) # this handles a case when 0 is not a legal play
         return self.hand[0]
 
@@ -144,7 +145,7 @@ class HumanPlayer(Player):
     """
 
 
-    def ask_for_play(self, previous_plays, turn=0):
+    def ask_for_play(self, previous_plays, turn=0,count = 0):
         """Ask a human for a card during counting"""
 
         d = dict(enumerate(self.hand, 1))
@@ -202,12 +203,12 @@ class RLAgent(Player):
             return "Go!"
 
         # Only ask for a play if we have cards we can actually play
-        card = self.ask_for_play(count, previous_plays, turn)
+        card = self.ask_for_play(previous_plays, turn,count)
         self.update_after_play(card)
         return card
 
 
-    def ask_for_play(self, count, previous_plays, dealer=0):
+    def ask_for_play(self, previous_plays, dealer=0, count = 0):
         # Limit ourselves to cards we can actually play:
         self.playable_cards = [c for c in self.hand if c.value + count <= 31]
         state = torch.Tensor(self.get_state(self.hand, previous_plays, dealer))
@@ -330,9 +331,10 @@ class GreedyAgentPlayer(Player):
         else:
             # Otherwise, minimize the expected crib score:
             return list(discards[np.argmin(mean_scores)])
+        # return self.hand[0:2]
 
 
-    def ask_for_play(self, previous_plays, turn=0):
+    def ask_for_play(self,  previous_plays, turn=0, count = 0):
         """
         Calculate points for each possible play in your hand
         and choose the one that maximizes the points
@@ -380,7 +382,7 @@ class HeuristicAgentPlayer(Player):
                 new_scores.pop(remIdx)
         return new_discards, new_scores
     
-    def ask_for_discards(self):
+    def ask_for_discards(self, dealer=0):
         """
         For each possible discard, score and select
         highest scoring move. Note: this will give opponents 
@@ -406,7 +408,7 @@ class HeuristicAgentPlayer(Player):
         return list(discards[np.argmin(scores)])
 
 
-    def ask_for_play(self, previous_plays):
+    def ask_for_play(self, previous_plays,turn = 0, count = 0):
         """
         Calculate points for each possible play in your hand
         and choose the one that maximizes the points
@@ -420,5 +422,109 @@ class HeuristicAgentPlayer(Player):
         max_index = np.argmax(scores)
 
         return plays[max_index]
+
+class TreeAIPlayer(Player):
+
+    def ask_for_discards(self,dealer=0):
+        """
+        For each possible discard, score and select
+        highest scoring move. 
+        """
+
+        # print("cribbage: {} is choosing discards".format(self))
+        # deck = Deck().draw(52)
+        # potential_cards = [n for n in deck if n not in self.hand]
+        # bar = tqdm(total=226994)
+        # discards = []
+        # mean_scores = []
+        # for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+        #     inner_scores = []
+        #     for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
+        #         inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
+        #         bar.update(1)
+        #     inner_scores = np.array(inner_scores)
+        #     discards.append(discard)
+        #     mean_scores.append(inner_scores.mean())
+
+        # # return either the best (if my crib) or the worst (if not)
+        # if my_crib:
+        #     selected = np.argmax(mean_scores)
+        # else:
+        #     selected = np.argmin(mean_scores)
+
+        # return list(discards[selected])
+
+
+
+
+        # deck = Deck().draw(52)
+        # potential_cards = [n for n in deck if n not in self.hand]
+        # discards = []
+        # mean_scores = []
+        # for discard in combinations(self.hand, 2):  # 6 choose 2 == 15
+        #     inner_scores = []  # Keep track of the Expected score for each discard
+        #     hand_after_discard = [c for c in self.hand if c not in discard]  # The cards that remain after discarding
+        #     for pot in combinations(potential_cards, 3):  # 46 choose 3 == 15,180
+        #         if not dealer:
+        #             # Our goal is to minimize the crib, so we only compute crib scores:
+        #             inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]))
+        #         else:
+        #             # Score of the cards remaining in your hand:
+        #             score_of_remaining_cards = score_hand(hand_after_discard, pot[-1])
+        #             # Update inner scores with the sum of the score for remaining cards plus the expected score
+        #             # of the crib (because the dealer takes both the crib and its hand):
+        #             inner_scores.append(score_hand([*discard, *pot[:-1]], pot[-1]) + score_of_remaining_cards)
+        #     inner_scores = np.array(inner_scores)
+        #     discards.append(discard)
+        #     mean_scores.append(inner_scores.mean())
+
+        # if dealer:
+        #     # If we're the dealer, we want to maximize our expected score:
+        #     return list(discards[np.argmax(mean_scores)])
+        # else:
+        #     # Otherwise, minimize the expected crib score:
+        #     return list(discards[np.argmin(mean_scores)])
+
+
+
+
+        return self.hand[0:2]
+
+
+
+    def ask_for_play(self, hand, sequence, current_sum):
+        """
+        Generate a tree that are used to maximize the expected utility and to recommend next play
+        hand: current hand
+        sequence: previous cards in this play
+        current_sum: running total of cards in this play
+        """
+        tree = minimaxTree(hand, sequence, current_sum, 3)
+        return tree.recommendCard(0)
+
+    def play(self, count, previous_plays, turn=0):
+        """Public method"""
+        if not self.hand:
+            print('>>> I have no cards', self)
+            return "No cards!"
+        elif all(count + card.value > 31 for card in self.hand):
+            print(">>>", self, self.hand, "I have to say 'go' on that one")
+            return "Go!"
+        while True:
+            card = self.ask_for_play(self.hand, previous_plays,count)  # subclasses (that is, actual players) must implement this
+            #print("Nominated card", card)
+            if sum((pp.value for pp in previous_plays)) + card.value < 32:
+                self.update_after_play(card)
+                return card
+            else: 
+                # `self.ask_for_play` has returned a card that would put the 
+                # score above 31 but the player's hand contains at least one
+                # card that could be legally played (you're not allowed to say
+                # "go" here if you can legally play). How the code knows that 
+                # the player has a legal move is beyond me
+                print('>>> You nominated', card, 'but that is not a legal play given your hand. You must play if you can')
+
+
+
 
 NondeterministicAIPlayer = RandomPlayer

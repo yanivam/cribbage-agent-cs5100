@@ -160,3 +160,6 @@ def score_runs_heuristic(hand):
             break
     
     return points
+
+def peg_val(card):
+    return 10 if card.getRank() > 10 else card.getRank()
