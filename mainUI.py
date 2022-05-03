@@ -89,9 +89,8 @@ from cribbage.players import (
 
 def playCribbageOnce(i):
     print(f"start process {i}")
-    player_1 = player_choices[args.player1](args.player1)#'Player 1')#name=args.name1 or 
-    player_2 = player_choices[args.player2](args.player2)#'Player 2')#name=args.name2 or
-    randomPlayerTurn = [player_1, player_2]
+
+    randomPlayerTurn = [RLAgent('Player 1'), GreedyAgentPlayer('Player 2')]
     random.shuffle(randomPlayerTurn)
     game = Game(randomPlayerTurn[0], randomPlayerTurn[1])
     try:
@@ -126,17 +125,33 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("player1", help="Type of player 1", choices=player_choices)
     parser.add_argument("player2", help="Type of player 2", choices=player_choices)
-    global args
+
     args = parser.parse_args()
 
     # Play game
     start_time = time.time()
-    winners = play1000CribbageGames()
+    run_time = 100
+
+    bar = tqdm(total=run_time)
+    winners = []
+    for i in range(run_time):
+        # Set up players
+        player_1 = player_choices[args.player1]('Player 1')#'Player 1')#name=args.name1 or 
+        player_2 = player_choices[args.player2]('Player 2')#'Player 2')#name=args.name2 or
+        # Play game
+        game = Game(player_1, player_2)
+        try:
+            game.run()
+        except WinGame as win_game:
+            print(win_game)
+            winners.append(win_game)
+        bar.update(1)
+    # winners = play1000CribbageGames()
     duration = time.time() - start_time
     print('Played 1000 games in ' + str(duration) + ' seconds')
 
 
-    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 10
+    p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 100
     print(f'Percentage won by Player 1: ' + str(p_sum))
 
 

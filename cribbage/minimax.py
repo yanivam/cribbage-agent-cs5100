@@ -107,10 +107,6 @@ class minimaxTree:
                 newNode.sumFromPlay = current_sum + card.value
                 self.root.addChild(newNode)
 
-        # print("legal moves: ", legal_moves)
-        # print("Root's children: ", root.children)
-
-
         # Get deck of cards
         whole_deck = []
         deck = Deck()
@@ -159,21 +155,13 @@ class minimaxTree:
         
 
     # Searches the expectimax tree and recommends the card to be played
-    # 0 for  no risk, 1 for medium risk, 2 for high risk
     def recommendCard(self, risk):
         if len(self.root.getChildren()) == 0:
             return None
-        #print(self.root.getChildren())
         lowestNode = self.root.getChildren()[0]
 
         lowestNodeScore = float('-inf')
         for cnode in self.root.getChildren():
-            # Opponant will play whatever card is most negative utility for agent
-            # Find min node
-            # currMin = 1000
-            # for dnode in cnode.getChildren():
-            #     if dnode.getChildren()[0].getUtility() < currMin:
-            #         currMin = dnode.getChildren()[0].getUtility()
             if (cnode.getUtility() ) > lowestNodeScore: #+ currMin
                 lowestNode = cnode
                 lowestNodeScore = cnode.getUtility()
