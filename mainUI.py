@@ -1,13 +1,6 @@
 from argparse import ArgumentParser
-import sys
-import os
 
-import numpy as np
 from tqdm import tqdm
-import seaborn as sns
-import pandas as pd
-import matplotlib.pyplot as plt
-from contextlib import redirect_stdout
 import multiprocessing
 from multiprocessing import Manager
 import time
@@ -130,7 +123,7 @@ if __name__ == "__main__":
 
     # Play game
     start_time = time.time()
-    run_time = 100
+    run_time = 1
 
     bar = tqdm(total=run_time)
     winners = []
