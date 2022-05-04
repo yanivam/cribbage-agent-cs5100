@@ -141,7 +141,7 @@ if __name__ == "__main__":
         bar.update(1)
     # winners = play1000CribbageGames()
     duration = time.time() - start_time
-    print('Played 1000 games in ' + str(duration) + ' seconds')
+    print(f'Played {run_time} games in ' + str(duration) + ' seconds')
 
 
     p_sum = sum(1 if 'Game was won by Player 1' in str(winner) else 0 for winner in winners) / 100

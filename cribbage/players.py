@@ -149,7 +149,7 @@ class HumanPlayer(Player):
         """Ask a human for a card during counting"""
 
         d = dict(enumerate(self.hand, 1))
-        #print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
+        print(f">>> Your hand ({self}):", " ".join([str(c) for c in self.hand]))
 
         while True:
             inp = input(">>> Card number to play: ") or "1"
@@ -163,15 +163,15 @@ class HumanPlayer(Player):
 
         d = dict(enumerate(self.sorted_hand, 1))
 
-        #print('>>> Please nominate two cards to discard to the crib')
-        #print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
+        print('>>> Please nominate two cards to discard to the crib')
+        print(f'>>> {d[1]} {d[2]} {d[3]} {d[4]} {d[5]} {d[6]}')
         discard_prompt = ">>> "
 
         while True:
             inp = input(discard_prompt) or "12"
             cards = [d[int(i)] for i in inp.replace(" ", "").replace(",", "")]
             if len(cards) == 2:
-                #print(f">>> Discarded {cards[0]} {cards[1]}")
+                print(f">>> Discarded {cards[0]} {cards[1]}")
                 return cards
 
 
